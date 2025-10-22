@@ -181,6 +181,104 @@
   function getTopicTitle(id: string): string {
     return topicNames[id] || `Topic ${id}`;
   }
+
+  // Topic order for each domain (for navigation)
+  const domainTopicOrder: { [key: string]: string[] } = {
+    '1': [
+      '1.1.a', '1.1.b', '1.1.c', '1.1.d', '1.1.e', '1.1.f', '1.1.g', '1.1.h',
+      '1.2.a', '1.2.b', '1.2.c', '1.2.d', '1.2.e', '1.2.f',
+      '1.3.a', '1.3.b',
+      '1.4', '1.5', '1.6', '1.7', '1.8',
+      '1.9.a', '1.9.b', '1.9.c', '1.9.d',
+      '1.10', '1.11.a', '1.11.b', '1.11.c', '1.11.d',
+      '1.12',
+      '1.13.a', '1.13.b', '1.13.c', '1.13.d'
+    ],
+    '2': [
+      '2.1.a', '2.1.b', '2.1.c',
+      '2.2.a', '2.2.b', '2.2.c',
+      '2.3', '2.4',
+      '2.5.a', '2.5.b', '2.5.c', '2.5.d',
+      '2.6', '2.7', '2.8', '2.9'
+    ],
+    '3': [
+      '3.1.a', '3.1.b', '3.1.c', '3.1.d', '3.1.e', '3.1.f', '3.1.g',
+      '3.2.a', '3.2.b', '3.2.c',
+      '3.3.a', '3.3.b', '3.3.c', '3.3.d',
+      '3.4.a', '3.4.b', '3.4.c', '3.4.d',
+      '3.5'
+    ],
+    '4': [
+      '4.1', '4.2', '4.3', '4.4', '4.5', '4.6', '4.7', '4.8', '4.9'
+    ],
+    '5': [
+      '5.1', '5.2', '5.3', '5.4', '5.5', '5.6', '5.7', '5.8', '5.9', '5.10'
+    ],
+    '6': [
+      '6.1', '6.2', '6.3', '6.4', '6.5', '6.6', '6.7'
+    ]
+  };
+
+  // Get the domain number from topic ID (e.g., "1.1.a" -> "1")
+  function getDomainFromTopic(id: string): string {
+    return id.split('.')[0];
+  }
+
+  // Get previous topic ID
+  function getPreviousTopic(id: string): string | null {
+    const domain = getDomainFromTopic(id);
+    const topics = domainTopicOrder[domain];
+    if (!topics) return null;
+
+    const currentIndex = topics.indexOf(id);
+    if (currentIndex <= 0) return null;
+
+    return topics[currentIndex - 1];
+  }
+
+  // Get next topic ID
+  function getNextTopic(id: string): string | null {
+    const domain = getDomainFromTopic(id);
+    const topics = domainTopicOrder[domain];
+    if (!topics) return null;
+
+    const currentIndex = topics.indexOf(id);
+    if (currentIndex === -1 || currentIndex >= topics.length - 1) return null;
+
+    return topics[currentIndex + 1];
+  }
+
+  // Check if current topic is first in domain
+  function isFirstTopic(id: string): boolean {
+    const domain = getDomainFromTopic(id);
+    const topics = domainTopicOrder[domain];
+    if (!topics) return false;
+    return topics.indexOf(id) === 0;
+  }
+
+  // Check if current topic is last in domain
+  function isLastTopic(id: string): boolean {
+    const domain = getDomainFromTopic(id);
+    const topics = domainTopicOrder[domain];
+    if (!topics) return false;
+    return topics.indexOf(id) === topics.length - 1;
+  }
+
+  // Check if topic exists in navigation
+  function topicExists(id: string): boolean {
+    const domain = getDomainFromTopic(id);
+    const topics = domainTopicOrder[domain];
+    if (!topics) return false;
+    return topics.includes(id);
+  }
+
+  // Reactive navigation state
+  $: previousTopic = getPreviousTopic(topicId);
+  $: nextTopic = getNextTopic(topicId);
+  $: isFirst = isFirstTopic(topicId);
+  $: isLast = isLastTopic(topicId);
+  $: showNavigation = topicExists(topicId);
+  $: currentDomain = getDomainFromTopic(topicId);
 </script>
 
 <div class="min-h-screen bg-white">
@@ -278,21 +376,52 @@
     </div>
 
     <!-- Navigation Buttons (Prev/Next Topic) -->
-    <div class="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
-      <button
-        class="px-6 py-3 bg-white border-2 border-gray-300 text-black font-medium rounded-lg
-               hover:bg-gray-50 transition-all duration-200"
-      >
-        ← Previous Topic
-      </button>
+    {#if showNavigation}
+      <div class="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
+        <!-- Previous Button -->
+        {#if isFirst}
+          <!-- First topic: Back to Domain -->
+          <a
+            href="/domains/{currentDomain}"
+            class="px-6 py-3 bg-white border-2 border-black text-black font-medium rounded-lg
+                   hover:bg-gray-50 transition-all duration-200"
+          >
+            ← Back to Domain {currentDomain}.0
+          </a>
+        {:else if previousTopic}
+          <!-- Middle topics: Previous Topic -->
+          <a
+            href="/study/{previousTopic}"
+            class="px-6 py-3 bg-white border-2 border-black text-black font-medium rounded-lg
+                   hover:bg-gray-50 transition-all duration-200"
+          >
+            ← Previous Topic
+          </a>
+        {/if}
 
-      <button
-        class="px-6 py-3 bg-black text-white font-medium rounded-lg
-               hover:bg-gray-800 transition-all duration-200"
-      >
-        Next Topic →
-      </button>
-    </div>
+        <!-- Next Button -->
+        {#if isLast}
+          <!-- Last topic: Domain Complete -->
+          <a
+            href="/domains"
+            class="px-6 py-3 bg-black text-white font-medium rounded-lg
+                   hover:bg-gray-800 transition-all duration-200 flex items-center"
+          >
+            <span class="mr-2">✓</span>
+            Domain {currentDomain}.0 Complete! Return to Domains
+          </a>
+        {:else if nextTopic}
+          <!-- Middle topics: Next Topic -->
+          <a
+            href="/study/{nextTopic}"
+            class="px-6 py-3 bg-black text-white font-medium rounded-lg
+                   hover:bg-gray-800 transition-all duration-200"
+          >
+            Next Topic →
+          </a>
+        {/if}
+      </div>
+    {/if}
   </main>
 </div>
 
