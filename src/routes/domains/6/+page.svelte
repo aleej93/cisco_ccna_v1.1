@@ -16,8 +16,19 @@
 		{
 			id: '6.3',
 			title:
-				'Describe controller-based, software defined architecture (overlay, underlay, and fabric; separation of control plane and data plane; northbound and southbound APIs)',
-			href: '/study/6.3'
+				'Describe controller-based, software defined architecture (overlay, underlay, and fabric)',
+			subtopics: [
+				{
+					id: '6.3.a',
+					label: 'Separation of control plane and data plane',
+					href: '/study/6.3.a'
+				},
+				{
+					id: '6.3.b',
+					label: 'Northbound and Southbound APIs',
+					href: '/study/6.3.b'
+				}
+			]
 		},
 		{
 			id: '6.4',
