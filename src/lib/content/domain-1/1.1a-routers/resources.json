@@ -1,5 +1,91 @@
 {
-	"references": [],
-	"videos": [],
-	"labs": []
+  "references": [
+    {
+      "title": "CCNA 200-301 Official Exam Topics",
+      "url": "https://learningnetwork.cisco.com/s/ccna-exam-topics",
+      "type": "documentation",
+      "description": "Official exam blueprint from Cisco (always refer to this for current objectives)"
+    },
+    {
+      "title": "Cisco Router Configuration Guides",
+      "url": "https://www.cisco.com/c/en/us/support/routers/index.html",
+      "type": "documentation",
+      "description": "Official configuration guides for Cisco routers"
+    },
+    {
+      "title": "Cisco IOS Command Reference",
+      "url": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/fundamentals/command/cf_command_ref.html",
+      "type": "documentation",
+      "description": "Complete CLI command reference for Cisco IOS"
+    },
+    {
+      "title": "CCNA 200-301 Official Cert Guide Library (Wendell Odom)",
+      "url": "https://www.ciscopress.com/store/ccna-200-301-official-cert-guide-library-9781587147142",
+      "type": "book",
+      "description": "The gold standard for CCNA preparation (Volumes 1 & 2)"
+    },
+    {
+      "title": "31 Days Before Your CCNA Exam (Allan Johnson)",
+      "url": "https://www.ciscopress.com/store/31-days-before-your-ccna-exam-a-day-by-day-review-9780136755494",
+      "type": "book",
+      "description": "Excellent last-minute review guide"
+    },
+    {
+      "title": "Cisco Learning Network",
+      "url": "https://learningnetwork.cisco.com/s/topic/0TO3i0000008jY5GAI/ccna-200-301",
+      "type": "community",
+      "description": "Official Cisco community for CCNA candidates"
+    },
+    {
+      "title": "r/ccna Subreddit",
+      "url": "https://www.reddit.com/r/ccna/",
+      "type": "community",
+      "description": "Active community with study tips, exam experiences, and advice"
+    },
+    {
+      "title": "NetworkLessons.com - Routing Fundamentals",
+      "url": "https://networklessons.com/cisco/ccna-200-301",
+      "type": "tutorial",
+      "description": "Detailed explanations of routing concepts"
+    },
+    {
+      "title": "No files uploaded yet",
+      "type": "placeholder",
+      "description": "Upload your own notes, PDFs, or Packet Tracer labs here!"
+    }
+  ],
+  "videos": [
+    {
+      "title": "What is a Router? - Jeremy's IT Lab",
+      "url": "https://www.youtube.com/watch?v=AhOU2eOpmX0",
+      "type": "video",
+      "description": "Clear visual explanation of router fundamentals (Free CCNA series)"
+    },
+    {
+      "title": "How Routers Work - NetworkChuck",
+      "url": "https://www.youtube.com/c/NetworkChuck",
+      "type": "video",
+      "description": "Entertaining and informative networking videos"
+    },
+    {
+      "title": "CCNA 200-301 Complete Course - Jeremy's IT Lab (Free)",
+      "url": "https://www.youtube.com/playlist?list=PLxbwE86jKRgMpuZuLBivzlM8s2Dk5lXBQ",
+      "type": "video",
+      "description": "Full CCNA course on YouTube - highly recommended"
+    }
+  ],
+  "labs": [
+    {
+      "title": "Cisco Packet Tracer (Free)",
+      "url": "https://www.netacad.com/courses/packet-tracer",
+      "type": "lab",
+      "description": "Official Cisco network simulation tool - required for CCNA practice"
+    },
+    {
+      "title": "GNS3 (Advanced Alternative)",
+      "url": "https://www.gns3.com/",
+      "type": "lab",
+      "description": "Network emulator for more realistic router simulations"
+    }
+  ]
 }
