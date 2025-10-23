@@ -1,6 +1,6 @@
 {
-  "topicId": "1.10",
-  "topicTitle": "Verify IP Parameters for Client OS (Windows, Mac OS, Linux)",
-  "version": "0.0.1",
-  "questions": []
+	"topicId": "1.10",
+	"topicTitle": "Verify IP Parameters for Client OS (Windows, Mac OS, Linux)",
+	"version": "0.0.1",
+	"questions": []
 }

@@ -1,6 +1,6 @@
 {
-  "topicId": "2.5.d",
-  "topicTitle": "Root Guard, Loop Guard, BPDU Filter, and BPDU Guard",
-  "version": "0.0.1",
-  "questions": []
+	"topicId": "2.5.d",
+	"topicTitle": "Root Guard, Loop Guard, BPDU Filter, and BPDU Guard",
+	"version": "0.0.1",
+	"questions": []
 }

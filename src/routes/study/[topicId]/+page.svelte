@@ -10,6 +10,47 @@
 	import quizRouters from '$lib/content/domain-1/1.1a-routers/practice-quiz.json';
 	import type { ComponentType } from 'svelte';
 
+	const MARKDOWN_TABS = ['study', 'real-world', 'exam-tips', 'commands'] as const;
+	type MarkdownTab = (typeof MARKDOWN_TABS)[number];
+
+	const markdownFiles: Record<MarkdownTab, string> = {
+		study: 'study-material.md',
+		'real-world': 'real-world.md',
+		'exam-tips': 'exam-tips.md',
+		commands: 'commands.md'
+	};
+
+	const markdownCache: Record<MarkdownTab, ComponentType | null> = {
+		study: null,
+		'real-world': null,
+		'exam-tips': null,
+		commands: null
+	};
+
+	const markdownLoading: Record<MarkdownTab, boolean> = {
+		study: false,
+		'real-world': false,
+		'exam-tips': false,
+		commands: false
+	};
+
+	type ResourceEntry =
+		| string
+		| {
+				title?: string;
+				url?: string;
+				description?: string;
+		  };
+
+	interface ResourcesContent {
+		references: ResourceEntry[];
+		videos: ResourceEntry[];
+		labs: ResourceEntry[];
+	}
+
+	let resourcesContent: ResourcesContent | null = null;
+	let resourcesLoading = false;
+
 	// TypeScript interface for tab structure
 	interface Tab {
 		id: string;
@@ -23,55 +64,15 @@
 	// Reactive state for active tab
 	let activeTab = 'study';
 
-	// Store for the loaded markdown component
-	let MarkdownContent: ComponentType | null = null;
-	let contentLoading = true;
-
 	// Use Vite's glob import to eagerly load all markdown files
 	const allMarkdownModules = import.meta.glob<{ default: ComponentType }>(
 		'../../../lib/content/**/*.md',
 		{ eager: true }
 	);
 
-	// Map topic IDs to file paths
-	const topicPaths: { [key: string]: string } = {
-		'1.1.a': '../../../lib/content/domain-1/1.1a-routers/study-material.md'
-		// Add more mappings as you create content
-	};
-
-	// Load markdown content when topicId changes
-	$: {
-		if (topicId) {
-			loadMarkdownContent(topicId);
-		}
-	}
-
-	function loadMarkdownContent(id: string) {
-		contentLoading = true;
-		MarkdownContent = null;
-
-		const filePath = topicPaths[id];
-		if (!filePath) {
-			contentLoading = false;
-			return;
-		}
-
-		try {
-			// Get the module from the pre-loaded glob
-			const module = allMarkdownModules[filePath];
-
-			if (module?.default) {
-				MarkdownContent = module.default;
-			} else {
-				console.error(`Markdown module not found for path: ${filePath}`);
-				console.log('Available modules:', Object.keys(allMarkdownModules));
-			}
-		} catch (err) {
-			console.error(`Failed to load markdown for ${id}:`, err);
-		} finally {
-			contentLoading = false;
-		}
-	}
+	const allResourceModules = import.meta.glob('../../../lib/content/**/*.json', {
+		eager: true
+	}) as Record<string, unknown>;
 
 	// Tab definitions
 	const tabs: Tab[] = [
@@ -225,6 +226,8 @@
 		'6.1': 'How Automation Impacts Network Management',
 		'6.2': 'Traditional vs Controller-Based Networking',
 		'6.3': 'Controller-Based Software Defined Architecture',
+		'6.3.a': 'Separation of Control Plane and Data Plane',
+		'6.3.b': 'Northbound and Southbound APIs',
 		'6.4': 'AI and Machine Learning in Network Operations',
 		'6.5': 'Characteristics of REST-Based APIs',
 		'6.6': 'Configuration Management Mechanisms',
@@ -372,6 +375,103 @@
 		return topics.includes(id);
 	}
 
+	function slugify(value: string): string {
+		return value
+			.toLowerCase()
+			.replace(/[^a-z0-9]+/g, '-')
+			.replace(/^-+|-+$/g, '');
+	}
+
+	function getTopicDirPrefix(id: string): string | null {
+		const parts = id.split('.');
+		if (parts.length < 2) {
+			return null;
+		}
+
+		let prefix = `${parts[0]}.${parts[1]}`;
+		if (parts.length > 2) {
+			prefix += parts.slice(2).join('');
+		}
+
+		return prefix;
+	}
+
+	function getContentPath(topic: string, filename: string): string | null {
+		const title = topicNames[topic];
+		if (!title) {
+			return null;
+		}
+
+		const domain = getDomainFromTopic(topic);
+		const prefix = getTopicDirPrefix(topic);
+		if (!prefix) {
+			return null;
+		}
+
+		const slug = slugify(title);
+		return `../../../lib/content/domain-${domain}/${prefix}-${slug}/${filename}`;
+	}
+
+	function isMarkdownTab(tabId: string): tabId is MarkdownTab {
+		return (MARKDOWN_TABS as readonly string[]).includes(tabId);
+	}
+
+	function loadMarkdownForTab(topic: string, tab: MarkdownTab) {
+		markdownLoading[tab] = true;
+		markdownCache[tab] = null;
+
+		const path = getContentPath(topic, markdownFiles[tab]);
+		if (!path) {
+			markdownLoading[tab] = false;
+			return;
+		}
+
+		const module = allMarkdownModules[path] as { default: ComponentType } | undefined;
+		if (module?.default) {
+			markdownCache[tab] = module.default;
+		} else {
+			console.warn(`Markdown content not found for ${tab} at path ${path}`);
+		}
+
+		markdownLoading[tab] = false;
+	}
+
+	function isAbsoluteUrl(url: string): boolean {
+		return /^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(url);
+	}
+
+	function loadResourcesContent(topic: string) {
+		resourcesLoading = true;
+		resourcesContent = null;
+
+		const path = getContentPath(topic, 'resources.json');
+		if (!path) {
+			resourcesLoading = false;
+			return;
+		}
+
+		const module = allResourceModules[path] as
+			| { default?: ResourcesContent }
+			| ResourcesContent
+			| undefined;
+
+		if (module) {
+			const data =
+				(module as { default?: ResourcesContent }).default ?? (module as ResourcesContent);
+
+			resourcesContent = {
+				references: Array.isArray(data?.references) ? data.references : [],
+				videos: Array.isArray(data?.videos) ? data.videos : [],
+				labs: Array.isArray(data?.labs) ? data.labs : []
+			};
+		}
+
+		resourcesLoading = false;
+	}
+
+	const proseClasses =
+		'prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-black prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-p:leading-relaxed prose-p:text-gray-700 prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:pl-4 prose-blockquote:italic prose-strong:font-semibold prose-strong:text-black prose-code:rounded prose-code:bg-gray-100 prose-code:px-2 prose-code:py-1 prose-code:text-sm prose-code:text-gray-800 prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-ol:list-decimal prose-ol:pl-6 prose-ul:list-disc prose-ul:pl-6 prose-li:text-gray-700 prose-table:w-full prose-table:border-collapse prose-th:border prose-th:border-gray-300 prose-th:bg-gray-100 prose-th:px-4 prose-th:py-2 prose-td:border prose-td:border-gray-300 prose-td:px-4 prose-td:py-2';
+
 	// Reactive navigation state
 	$: previousTopic = getPreviousTopic(topicId);
 	$: nextTopic = getNextTopic(topicId);
@@ -379,6 +479,28 @@
 	$: isLast = isLastTopic(topicId);
 	$: showNavigation = topicExists(topicId);
 	$: currentDomain = getDomainFromTopic(topicId);
+
+	$: if (topicId) {
+		for (const tab of MARKDOWN_TABS) {
+			markdownCache[tab] = null;
+			markdownLoading[tab] = false;
+		}
+		resourcesContent = null;
+		resourcesLoading = false;
+		loadMarkdownForTab(topicId, 'study');
+	}
+
+	$: if (topicId && isMarkdownTab(activeTab)) {
+		if (!markdownCache[activeTab] && !markdownLoading[activeTab]) {
+			loadMarkdownForTab(topicId, activeTab);
+		}
+	}
+
+	$: if (topicId && activeTab === 'resources') {
+		if (!resourcesContent && !resourcesLoading) {
+			loadResourcesContent(topicId);
+		}
+	}
 </script>
 
 <div class="min-h-screen bg-white">
@@ -444,33 +566,14 @@
 			<!-- Tab Content Area -->
 			<div class="min-h-[400px] rounded-lg border border-gray-200 bg-white p-8">
 				{#if activeTab === 'study'}
-					{#if contentLoading}
+					{#if markdownLoading.study}
 						<div class="text-gray-600">
 							<p>Loading study material...</p>
 						</div>
-					{:else if MarkdownContent}
-						<!-- Render Markdown Content with Tailwind Typography -->
-						<div class="space-y-10">
-							<article
-								class="prose prose-lg max-w-none
-	                           prose-headings:font-bold prose-headings:text-black
-	                           prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl
-                           prose-p:leading-relaxed prose-p:text-gray-700
-                           prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
-                           prose-blockquote:border-l-4 prose-blockquote:border-blue-500
-                           prose-blockquote:pl-4 prose-blockquote:italic prose-strong:font-semibold prose-strong:text-black prose-code:rounded prose-code:bg-gray-100
-                           prose-code:px-2 prose-code:py-1
-                           prose-code:text-sm prose-code:text-gray-800
-                           prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-ol:list-decimal prose-ol:pl-6 prose-ul:list-disc
-                           prose-ul:pl-6 prose-li:text-gray-700 prose-table:w-full prose-table:border-collapse
-                           prose-th:border prose-th:border-gray-300
-                           prose-th:bg-gray-100 prose-th:px-4
-                           prose-th:py-2
-                           prose-td:border prose-td:border-gray-300 prose-td:px-4 prose-td:py-2"
-							>
-								<svelte:component this={MarkdownContent} />
-							</article>
-						</div>
+					{:else if markdownCache.study}
+						<article class={proseClasses}>
+							<svelte:component this={markdownCache.study} />
+						</article>
 					{:else}
 						<div class="text-gray-600">
 							<h2 class="mb-4 text-2xl font-bold text-black">Study Material</h2>
@@ -487,25 +590,158 @@
 						</div>
 					{/if}
 				{:else if activeTab === 'real-world'}
-					<div class="text-gray-600">
-						<h2 class="mb-4 text-2xl font-bold text-black">Real World Examples</h2>
-						<p>Real-world examples will go here</p>
-					</div>
+					{#if markdownLoading['real-world']}
+						<div class="text-gray-600">
+							<p>Loading real-world examples...</p>
+						</div>
+					{:else if markdownCache['real-world']}
+						<article class={proseClasses}>
+							<svelte:component this={markdownCache['real-world']} />
+						</article>
+					{:else}
+						<div class="text-gray-600">
+							<h2 class="mb-4 text-2xl font-bold text-black">Real World Examples</h2>
+							<p>Content for this section is coming soon...</p>
+						</div>
+					{/if}
 				{:else if activeTab === 'exam-tips'}
-					<div class="text-gray-600">
-						<h2 class="mb-4 text-2xl font-bold text-black">Exam Tips</h2>
-						<p>Exam tips will go here</p>
-					</div>
+					{#if markdownLoading['exam-tips']}
+						<div class="text-gray-600">
+							<p>Loading exam tips...</p>
+						</div>
+					{:else if markdownCache['exam-tips']}
+						<article class={proseClasses}>
+							<svelte:component this={markdownCache['exam-tips']} />
+						</article>
+					{:else}
+						<div class="text-gray-600">
+							<h2 class="mb-4 text-2xl font-bold text-black">Exam Tips</h2>
+							<p>Exam tips for this topic are coming soon...</p>
+						</div>
+					{/if}
 				{:else if activeTab === 'resources'}
-					<div class="text-gray-600">
-						<h2 class="mb-4 text-2xl font-bold text-black">Resources</h2>
-						<p>Links and resources will go here</p>
-					</div>
+					{#if resourcesLoading}
+						<div class="text-gray-600">
+							<p>Loading resources...</p>
+						</div>
+					{:else if resourcesContent && (resourcesContent.references.length || resourcesContent.videos.length || resourcesContent.labs.length)}
+						<!-- eslint-disable svelte/no-navigation-without-resolve -->
+						<div class="space-y-6 text-gray-700">
+							{#if resourcesContent.references.length}
+								<div>
+									<h3 class="text-xl font-semibold text-black">References</h3>
+									<ul class="mt-2 list-disc space-y-1 pl-6">
+										{#each resourcesContent.references as item, index (index)}
+											<li>
+												{#if typeof item === 'string'}
+													{item}
+												{:else}
+													{#if item.url}
+														<a
+															href={isAbsoluteUrl(item.url) ? item.url : resolve(item.url)}
+															target="_blank"
+															rel="noopener noreferrer"
+															class="text-blue-600 hover:underline"
+														>
+															{item.title ?? item.url}
+														</a>
+													{:else}
+														{item.title ?? 'Untitled resource'}
+													{/if}
+													{#if item.description}
+														<p class="text-sm text-gray-500">{item.description}</p>
+													{/if}
+												{/if}
+											</li>
+										{/each}
+									</ul>
+								</div>
+							{/if}
+
+							{#if resourcesContent.videos.length}
+								<div>
+									<h3 class="text-xl font-semibold text-black">Videos</h3>
+									<ul class="mt-2 list-disc space-y-1 pl-6">
+										{#each resourcesContent.videos as item, index (index)}
+											<li>
+												{#if typeof item === 'string'}
+													{item}
+												{:else}
+													{#if item.url}
+														<a
+															href={isAbsoluteUrl(item.url) ? item.url : resolve(item.url)}
+															target="_blank"
+															rel="noopener noreferrer"
+															class="text-blue-600 hover:underline"
+														>
+															{item.title ?? item.url}
+														</a>
+													{:else}
+														{item.title ?? 'Untitled video'}
+													{/if}
+													{#if item.description}
+														<p class="text-sm text-gray-500">{item.description}</p>
+													{/if}
+												{/if}
+											</li>
+										{/each}
+									</ul>
+								</div>
+							{/if}
+
+							{#if resourcesContent.labs.length}
+								<div>
+									<h3 class="text-xl font-semibold text-black">Labs</h3>
+									<ul class="mt-2 list-disc space-y-1 pl-6">
+										{#each resourcesContent.labs as item, index (index)}
+											<li>
+												{#if typeof item === 'string'}
+													{item}
+												{:else}
+													{#if item.url}
+														<a
+															href={isAbsoluteUrl(item.url) ? item.url : resolve(item.url)}
+															target="_blank"
+															rel="noopener noreferrer"
+															class="text-blue-600 hover:underline"
+														>
+															{item.title ?? item.url}
+														</a>
+													{:else}
+														{item.title ?? 'Untitled lab'}
+													{/if}
+													{#if item.description}
+														<p class="text-sm text-gray-500">{item.description}</p>
+													{/if}
+												{/if}
+											</li>
+										{/each}
+									</ul>
+								</div>
+							{/if}
+						</div>
+						<!-- eslint-enable svelte/no-navigation-without-resolve -->
+					{:else}
+						<div class="text-gray-600">
+							<h2 class="mb-4 text-2xl font-bold text-black">Resources</h2>
+							<p>Resources for this topic are coming soon...</p>
+						</div>
+					{/if}
 				{:else if activeTab === 'commands'}
-					<div class="text-gray-600">
-						<h2 class="mb-4 text-2xl font-bold text-black">CLI Commands</h2>
-						<p>CLI commands will go here</p>
-					</div>
+					{#if markdownLoading.commands}
+						<div class="text-gray-600">
+							<p>Loading CLI commands...</p>
+						</div>
+					{:else if markdownCache.commands}
+						<article class={proseClasses}>
+							<svelte:component this={markdownCache.commands} />
+						</article>
+					{:else}
+						<div class="text-gray-600">
+							<h2 class="mb-4 text-2xl font-bold text-black">CLI Commands</h2>
+							<p>CLI commands for this topic are coming soon...</p>
+						</div>
+					{/if}
 				{/if}
 			</div>
 		</div>
