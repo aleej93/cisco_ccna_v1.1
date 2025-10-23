@@ -1,0 +1,146 @@
+{
+	"topicId": "1.1a-routers",
+	"topicTitle": "Routers",
+	"version": "CCNA 200-301 v1.1",
+	"questions": [
+		{
+			"id": 1,
+			"question": "At which OSI layer does a router primarily operate when making forwarding decisions?",
+			"options": [
+				"Layer 2 (Data Link)",
+				"Layer 3 (Network)",
+				"Layer 4 (Transport)",
+				"Layer 7 (Application)"
+			],
+			"correctAnswer": 1,
+			"explanation": "Routers read Layer 3 headers (IPv4/IPv6) to choose a next hop based on the routing table. — CCNA v1.1: 1.1a"
+		},
+		{
+			"id": 2,
+			"question": "What is the main function of a router in a network?",
+			"options": [
+				"Connecting devices within the same broadcast domain",
+				"Converting electrical signals to light",
+				"Forwarding packets between different networks",
+				"Encrypting traffic end-to-end by default"
+			],
+			"correctAnswer": 2,
+			"explanation": "Routers interconnect separate IP networks and forward packets between them, creating Layer 3 boundaries. — 1.1a"
+		},
+		{
+			"id": 3,
+			"question": "A router receives a packet for 192.168.10.5. The table has routes 192.168.10.0/24, 192.168.0.0/16, and 0.0.0.0/0. Which rule selects the outgoing interface?",
+			"options": [
+				"Shortest prefix match",
+				"Oldest learned route wins",
+				"Highest administrative distance",
+				"Longest prefix match"
+			],
+			"correctAnswer": 3,
+			"explanation": "Routers choose the most specific route (greatest prefix length). /24 beats /16 and the default route. — 3.2 (ties to 1.1a)"
+		},
+		{
+			"id": 4,
+			"question": "Which statement about broadcast domains is true when a router is placed between two switches?",
+			"options": [
+				"The router merges both broadcast domains into one",
+				"The router blocks all unicast traffic",
+				"Each side of the router is a separate broadcast domain",
+				"Broadcasts can pass through if TTL is high"
+			],
+			"correctAnswer": 2,
+			"explanation": "Routers do not forward Layer 2 broadcasts; each router interface defines a new broadcast domain. — 1.1a"
+		},
+		{
+			"id": 5,
+			"question": "Which entries are automatically installed in a router’s routing table without configuration?",
+			"options": [
+				"Default route and static routes",
+				"Connected networks on up/up interfaces",
+				"OSPF-learned routes",
+				"BGP-learned routes"
+			],
+			"correctAnswer": 1,
+			"explanation": "Directly connected networks appear when interfaces are up and have Layer 3 addresses. — 3.1 (foundation for 1.1a)"
+		},
+		{
+			"id": 6,
+			"question": "Two equal-cost OSPF routes exist to 10.10.10.0/24 through different next hops. What will a router typically do by default?",
+			"options": [
+				"Prefer the route with the higher metric",
+				"Perform per-destination load balancing across both",
+				"Discard traffic due to ambiguity",
+				"Install only the first route learned"
+			],
+			"correctAnswer": 1,
+			"explanation": "Cisco routers support ECMP and will load balance across equal-cost routes (per-destination by default). — 3.2/3.4 context"
+		},
+		{
+			"id": 7,
+			"question": "Which item is compared first when multiple routes match a destination?",
+			"options": [
+				"Metric",
+				"Administrative distance",
+				"Longest prefix length",
+				"Outgoing interface speed"
+			],
+			"correctAnswer": 2,
+			"explanation": "Selection order: longest prefix match → then administrative distance (source trust) → then metric. — 3.2"
+		},
+		{
+			"id": 8,
+			"question": "What is the purpose of a default gateway on a host?",
+			"options": [
+				"To resolve MAC addresses for local devices",
+				"To provide DNS resolution to the Internet",
+				"To specify the switch port for trunking",
+				"To identify the router used to reach remote networks"
+			],
+			"correctAnswer": 3,
+			"explanation": "The default gateway is the router’s IP used when the destination is outside the local subnet. — 1.1a"
+		},
+		{
+			"id": 9,
+			"question": "Which Cisco IOS command shows a router’s Layer 3 forwarding decisions and next hops?",
+			"options": [
+				"show mac address-table",
+				"show ip route",
+				"show interfaces status",
+				"show vlan brief"
+			],
+			"correctAnswer": 1,
+			"explanation": "show ip route displays the routing table including sources, metrics, and next hops. — 3.1"
+		},
+		{
+			"id": 10,
+			"question": "Which statement best describes static routes vs dynamic routes?",
+			"options": [
+				"Static routes automatically adapt to failures; dynamic routes never do",
+				"Static routes are manually configured; dynamic routes are learned via protocols like OSPF",
+				"Both are learned from CDP updates",
+				"Static routes can only point to interfaces, not next-hop addresses"
+			],
+			"correctAnswer": 1,
+			"explanation": "Static routes are admin-defined; dynamic routes come from routing protocols and can reconverge after changes. — 3.3/3.4"
+		},
+		{
+			"id": 11,
+			"question": "In IPv6, which address type is used by routers to forward packets across networks on the public Internet?",
+			"options": [
+				"Link-local (fe80::/10)",
+				"Unique local (fc00::/7)",
+				"Global unicast (2000::/3)",
+				"Multicast (ff00::/8)"
+			],
+			"correctAnswer": 2,
+			"explanation": "Global unicast addresses are routable on the Internet and used for inter-network forwarding. — 1.1a (IPv6 context)"
+		},
+		{
+			"id": 12,
+			"question": "Which Cisco feature speeds up packet forwarding by using a prebuilt FIB and adjacency table?",
+			"options": ["STP", "CEF (Cisco Express Forwarding)", "CDP", "LLDP"],
+			"correctAnswer": 1,
+			"explanation": "CEF builds a Forwarding Information Base and adjacency table for high-speed Layer 3 forwarding. — 1.1a/3.2"
+		}
+	]
+}
