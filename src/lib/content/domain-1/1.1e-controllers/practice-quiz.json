@@ -1,6 +1,384 @@
 {
-	"topicId": "1.1.e",
-	"topicTitle": "Controllers",
-	"version": "0.0.1",
-	"questions": []
+  "quizTitle": "CCNA 200-301 v1.1 - Topic 1.1.e Controllers Practice Quiz",
+  "quizDescription": "25 exam-style questions covering Wireless LAN Controllers (WLCs), split-MAC architecture, CAPWAP protocol, and WLC deployment models",
+  "passingScore": 80,
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the primary purpose of a Wireless LAN Controller (WLC) in an enterprise wireless network?",
+      "options": {
+        "A": "To provide Layer 3 routing between wireless clients and the Internet",
+        "B": "To centrally manage and configure multiple lightweight access points",
+        "C": "To act as a DHCP server for all wireless clients",
+        "D": "To encrypt all wireless traffic using WPA3"
+      },
+      "correctAnswer": "B",
+      "explanation": "The primary purpose of a WLC is to centrally manage and configure multiple lightweight access points (option B). While WLCs can assist with routing and DHCP relay, these are not their primary purposes. The WLC provides centralized control, making it easy to configure hundreds or thousands of APs from a single interface.",
+      "difficulty": "easy",
+      "examTip": "Remember: WLC = centralized management. This is the core concept of split-MAC architecture."
+    },
+    {
+      "id": 2,
+      "question": "In split-MAC architecture, which device handles real-time operations such as RF transmission and encryption?",
+      "options": {
+        "A": "Wireless LAN Controller (WLC)",
+        "B": "Lightweight Access Point (AP)",
+        "C": "RADIUS server",
+        "D": "Distribution layer switch"
+      },
+      "correctAnswer": "B",
+      "explanation": "In split-MAC architecture, the lightweight Access Point (option B) handles real-time, time-sensitive operations including RF transmission, encryption/decryption, beaconing, and receiving client frames. The WLC handles management functions like authentication, RF management, and policy enforcement.",
+      "difficulty": "easy",
+      "examTip": "Memory aid: 'Real-time at AP, Management at WLC' - time-sensitive operations stay at the AP for low latency."
+    },
+    {
+      "id": 3,
+      "question": "What protocol do lightweight access points use to communicate with the WLC?",
+      "options": {
+        "A": "LWAPP",
+        "B": "SNMP",
+        "C": "CAPWAP",
+        "D": "RADIUS"
+      },
+      "correctAnswer": "C",
+      "explanation": "Lightweight access points use CAPWAP (Control And Provisioning of Wireless Access Points) protocol to communicate with the WLC (option C). CAPWAP is based on the older LWAPP protocol but is now the industry standard. It uses UDP ports 5246 (control) and 5247 (data).",
+      "difficulty": "easy",
+      "examTip": "CAPWAP is a very common exam question. Know that it's the protocol for lightweight AP-to-WLC communication."
+    },
+    {
+      "id": 4,
+      "question": "Which UDP port does the CAPWAP control tunnel use?",
+      "options": {
+        "A": "5246",
+        "B": "5247",
+        "C": "161",
+        "D": "514"
+      },
+      "correctAnswer": "A",
+      "explanation": "The CAPWAP control tunnel uses UDP port 5246 (option A). This tunnel is used for AP configuration and management messages, and it is encrypted by default. The data tunnel uses UDP port 5247 for wireless client traffic.",
+      "difficulty": "medium",
+      "examTip": "Memory trick: 'Control Comes First' - Port 5246 (smaller number) for control, 5247 (larger) for data."
+    },
+    {
+      "id": 5,
+      "question": "Is the CAPWAP data tunnel encrypted by default?",
+      "options": {
+        "A": "Yes, it is always encrypted with AES-256",
+        "B": "Yes, it is encrypted by default but can be disabled",
+        "C": "No, but it can be encrypted using DTLS if configured",
+        "D": "No, and it cannot be encrypted"
+      },
+      "correctAnswer": "C",
+      "explanation": "The CAPWAP data tunnel is NOT encrypted by default (option C), but encryption can be enabled using DTLS (Datagram Transport Layer Security) if configured. The control tunnel IS encrypted by default. This is a common exam trap question.",
+      "difficulty": "medium",
+      "examTip": "EXAM TRAP: Only the CONTROL tunnel is encrypted by default, NOT the data tunnel!"
+    },
+    {
+      "id": 6,
+      "question": "A network administrator is deploying lightweight APs in a corporate office. How should the switch ports connecting to the APs be configured?",
+      "options": {
+        "A": "As trunk ports carrying all VLANs",
+        "B": "As access ports in the management VLAN",
+        "C": "As routed ports with IP addresses",
+        "D": "As trunk ports with native VLAN 1"
+      },
+      "correctAnswer": "B",
+      "explanation": "Lightweight APs should connect to access ports in the management VLAN (option B). This is because all wireless client traffic is tunneled via CAPWAP to the WLC, so the AP doesn't need to tag traffic with multiple VLANs. The AP only needs to reach the WLC management interface. This is different from autonomous APs, which often require trunk ports.",
+      "difficulty": "medium",
+      "examTip": "CRITICAL EXAM CONCEPT: Lightweight APs = access ports. WLCs = trunk ports. Don't confuse them!"
+    },
+    {
+      "id": 7,
+      "question": "Which WLC interface terminates CAPWAP tunnels from lightweight APs?",
+      "options": {
+        "A": "Virtual interface",
+        "B": "Dynamic interface",
+        "C": "Management interface",
+        "D": "Service port interface"
+      },
+      "correctAnswer": "C",
+      "explanation": "The management interface (option C) terminates CAPWAP tunnels from lightweight APs. This interface is also used for WLC management traffic such as SSH, HTTPS, RADIUS authentication, and SNMP. This is a high-priority exam topic.",
+      "difficulty": "medium",
+      "examTip": "Very important: Management interface = CAPWAP tunnel termination. This is frequently tested!"
+    },
+    {
+      "id": 8,
+      "question": "What is the purpose of a dynamic interface on a WLC?",
+      "options": {
+        "A": "To terminate CAPWAP tunnels",
+        "B": "To map WLANs to VLANs",
+        "C": "To provide out-of-band management",
+        "D": "To relay DHCP requests from wireless clients"
+      },
+      "correctAnswer": "B",
+      "explanation": "Dynamic interfaces are used to map WLANs to VLANs (option B). Each WLAN typically has its own dynamic interface, which corresponds to a specific VLAN on the wired network. For example, an 'Internal' WLAN might map to a dynamic interface on VLAN 100, while a 'Guest' WLAN maps to VLAN 200.",
+      "difficulty": "medium",
+      "examTip": "Dynamic interfaces = WLAN-to-VLAN mapping. Usually one dynamic interface per WLAN/SSID."
+    },
+    {
+      "id": 9,
+      "question": "An organization has lightweight APs at a remote branch office and a WLC at headquarters. The APs and WLC are in different subnets. What configuration is required for the APs to discover the WLC?",
+      "options": {
+        "A": "Configure static routes to the WLC on all branch switches",
+        "B": "Configure DHCP Option 43 with the WLC IP address",
+        "C": "Configure the APs with trunk ports to carry multiple VLANs",
+        "D": "Configure DNS A records for each individual AP"
+      },
+      "correctAnswer": "B",
+      "explanation": "DHCP Option 43 should be configured with the WLC IP address (option B). This option tells the APs where to find their WLC, enabling discovery even when they are in different subnets. Option 43 is not needed if the APs and WLC are in the same subnet, as broadcast discovery will work.",
+      "difficulty": "medium",
+      "examTip": "DHCP Option 43 is a common exam topic. It points APs to the WLC when they're in different subnets."
+    },
+    {
+      "id": 10,
+      "question": "What is the purpose of the virtual interface on a WLC?",
+      "options": {
+        "A": "To terminate CAPWAP tunnels",
+        "B": "To provide Layer 3 routing for wireless clients",
+        "C": "To relay DHCP requests and perform web authentication",
+        "D": "To connect the WLC to the physical network"
+      },
+      "correctAnswer": "C",
+      "explanation": "The virtual interface (option C) is used to relay DHCP requests from wireless clients and to present web authentication pages. It uses a 'fake' IP address (often 1.1.1.1 or 172.16.1.1) that doesn't need to be routable on the network. It's a logical interface, not a physical one.",
+      "difficulty": "medium",
+      "examTip": "Virtual interface uses a fake IP address for DHCP relay and web auth. It doesn't need to be routable!"
+    },
+    {
+      "id": 11,
+      "question": "Which of the following is a benefit of using a WLC architecture over autonomous APs?",
+      "options": {
+        "A": "Lower hardware costs for each individual AP",
+        "B": "Seamless client roaming with minimal delay",
+        "C": "Eliminates the need for a wired network infrastructure",
+        "D": "Removes the requirement for wireless security protocols"
+      },
+      "correctAnswer": "B",
+      "explanation": "Seamless client roaming with minimal delay (option B) is a key benefit of WLC architecture. The WLC manages roaming between APs, pre-authenticates clients on neighboring APs, and can maintain VoIP calls and video streams with less than 50ms roaming delay. Autonomous APs have longer roaming delays.",
+      "difficulty": "easy",
+      "examTip": "WLC benefits: scalability, roaming, load balancing, self-healing, centralized management. Know these!"
+    },
+    {
+      "id": 12,
+      "question": "What happens to wireless client traffic in a lightweight AP deployment?",
+      "options": {
+        "A": "It is bridged directly to the wired network by the AP",
+        "B": "It is tunneled via CAPWAP to the WLC before being forwarded to the wired network",
+        "C": "It is routed by the AP using Layer 3 forwarding",
+        "D": "It is sent to a RADIUS server for authentication before forwarding"
+      },
+      "correctAnswer": "B",
+      "explanation": "In a lightweight AP deployment, wireless client traffic is tunneled via CAPWAP to the WLC (option B) before being forwarded to the wired network. This is why lightweight APs only need access ports - they don't bridge traffic directly to the wired network. The WLC handles VLAN tagging and forwarding.",
+      "difficulty": "medium",
+      "examTip": "Key concept: ALL wireless traffic goes through CAPWAP tunnels to WLC, not directly to wired network."
+    },
+    {
+      "id": 13,
+      "question": "Which CAPWAP tunnel is encrypted by default?",
+      "options": {
+        "A": "Data tunnel only",
+        "B": "Control tunnel only",
+        "C": "Both control and data tunnels",
+        "D": "Neither tunnel is encrypted by default"
+      },
+      "correctAnswer": "B",
+      "explanation": "Only the control tunnel is encrypted by default (option B). The control tunnel uses DTLS for encryption. The data tunnel is NOT encrypted by default, but DTLS can be configured if encryption is required. This is a common exam trap question.",
+      "difficulty": "medium",
+      "examTip": "EXAM TRAP: Control = encrypted, Data = NOT encrypted (by default). Memorize this!"
+    },
+    {
+      "id": 14,
+      "question": "Which WLC deployment model is most cost-effective for a small branch office with 50 APs?",
+      "options": {
+        "A": "Unified WLC (dedicated appliance)",
+        "B": "Cloud-based WLC (Meraki)",
+        "C": "Embedded WLC (in a switch)",
+        "D": "Mobility Express (WLC on an AP)"
+      },
+      "correctAnswer": "D",
+      "explanation": "Mobility Express (option D) is the most cost-effective for a small site with fewer than 100 APs. In this deployment, one AP acts as both an AP and the WLC controller, eliminating the need for separate WLC hardware. It supports up to 100 APs and is ideal for small branch offices.",
+      "difficulty": "medium",
+      "examTip": "Deployment models: Mobility Express (<100 APs, cheapest), Embedded (<200 APs), Unified (large campus)."
+    },
+    {
+      "id": 15,
+      "question": "In split-MAC architecture, which device performs client authentication?",
+      "options": {
+        "A": "The lightweight access point",
+        "B": "The wireless LAN controller",
+        "C": "The RADIUS server exclusively",
+        "D": "The distribution layer switch"
+      },
+      "correctAnswer": "B",
+      "explanation": "The wireless LAN controller (option B) performs client authentication in split-MAC architecture. While a RADIUS server may be used as part of the authentication process (e.g., for 802.1X), the WLC manages and orchestrates the authentication. The lightweight AP does not handle authentication - that's a management function handled by the WLC.",
+      "difficulty": "medium",
+      "examTip": "Authentication is a management function, so it's handled by the WLC, not the AP."
+    },
+    {
+      "id": 16,
+      "question": "What is the maximum number of APs supported by Cisco Mobility Express?",
+      "options": {
+        "A": "25",
+        "B": "50",
+        "C": "100",
+        "D": "200"
+      },
+      "correctAnswer": "C",
+      "explanation": "Cisco Mobility Express supports up to 100 APs (option C). This makes it suitable for small to medium deployments where a dedicated WLC would be cost-prohibitive. One AP in the network runs the WLC software and manages the other APs.",
+      "difficulty": "easy",
+      "examTip": "Mobility Express = up to 100 APs. Embedded WLC = up to ~200 APs. Unified WLC = 6000+ APs."
+    },
+    {
+      "id": 17,
+      "question": "Which of the following best describes self-healing coverage in a WLC environment?",
+      "options": {
+        "A": "The WLC automatically reboots failed APs",
+        "B": "The WLC increases the transmit power of nearby APs when an AP fails",
+        "C": "The WLC redirects all traffic through a backup WLC",
+        "D": "The WLC disables wireless clients in the affected area"
+      },
+      "correctAnswer": "B",
+      "explanation": "Self-healing coverage means the WLC increases the transmit power of nearby APs when an AP fails (option B). This fills in the coverage gap left by the failed AP, allowing clients to maintain connectivity by associating with neighboring APs. This is an automated process managed by the WLC.",
+      "difficulty": "easy",
+      "examTip": "Self-healing = WLC automatically adjusts nearby AP power when an AP fails to maintain coverage."
+    },
+    {
+      "id": 18,
+      "question": "An administrator configures a switch port for a lightweight AP. The configuration includes 'switchport mode access' and 'switchport access vlan 10'. What does this indicate?",
+      "options": {
+        "A": "The AP will only serve clients on VLAN 10",
+        "B": "VLAN 10 is the management VLAN where the WLC management interface resides",
+        "C": "The AP must have a trunk connection to serve multiple WLANs",
+        "D": "The configuration is incorrect because lightweight APs require trunk ports"
+      },
+      "correctAnswer": "B",
+      "explanation": "This configuration indicates that VLAN 10 is the management VLAN where the WLC management interface resides (option B). Lightweight APs connect to access ports in the management VLAN because they only need to reach the WLC via CAPWAP. The WLC handles VLAN tagging for different WLANs using dynamic interfaces.",
+      "difficulty": "medium",
+      "examTip": "Lightweight APs on access ports in management VLAN. All client traffic tunneled to WLC via CAPWAP."
+    },
+    {
+      "id": 19,
+      "question": "How do lightweight APs and the WLC authenticate each other during the join process?",
+      "options": {
+        "A": "Using pre-shared keys (PSK)",
+        "B": "Using X.509 digital certificates",
+        "C": "Using RADIUS authentication",
+        "D": "Using username and password"
+      },
+      "correctAnswer": "B",
+      "explanation": "Lightweight APs and the WLC authenticate each other using X.509 digital certificates (option B). These certificates are installed on both the APs and the WLC, ensuring that only authorized APs can join the network and preventing rogue APs from connecting.",
+      "difficulty": "medium",
+      "examTip": "APs and WLCs use X.509 certificates for mutual authentication. This prevents rogue APs."
+    },
+    {
+      "id": 20,
+      "question": "Which of the following is a management function handled by the WLC in split-MAC architecture?",
+      "options": {
+        "A": "Transmitting beacon frames",
+        "B": "Encrypting client frames",
+        "C": "Selecting channels for APs",
+        "D": "Receiving probe requests from clients"
+      },
+      "correctAnswer": "C",
+      "explanation": "Selecting channels for APs (option C) is a management function handled by the WLC. The WLC performs RF management tasks like dynamic channel assignment and transmit power optimization. Real-time operations like beaconing, encryption, and receiving probe requests are handled by the lightweight AP.",
+      "difficulty": "easy",
+      "examTip": "Channel selection = management function = WLC. Beaconing/encryption = real-time = AP."
+    },
+    {
+      "id": 21,
+      "question": "A WLC needs to support three WLANs: Internal (VLAN 100), Guest (VLAN 200), and Voice (VLAN 300). How many dynamic interfaces should be configured?",
+      "options": {
+        "A": "1 (one dynamic interface can support multiple VLANs)",
+        "B": "2 (Internal and Guest share one, Voice gets its own)",
+        "C": "3 (one dynamic interface per WLAN)",
+        "D": "4 (three for WLANs plus one for management)"
+      },
+      "correctAnswer": "C",
+      "explanation": "Three dynamic interfaces should be configured (option C), one for each WLAN. Each WLAN typically maps to its own dynamic interface, which corresponds to a specific VLAN. Internal WLAN maps to a dynamic interface on VLAN 100, Guest to VLAN 200, and Voice to VLAN 300.",
+      "difficulty": "medium",
+      "examTip": "Typical configuration: One dynamic interface per WLAN/SSID for VLAN mapping."
+    },
+    {
+      "id": 22,
+      "question": "What is the primary difference between lightweight and autonomous APs?",
+      "options": {
+        "A": "Lightweight APs have lower transmit power than autonomous APs",
+        "B": "Lightweight APs require a WLC for management, while autonomous APs do not",
+        "C": "Autonomous APs support more wireless clients than lightweight APs",
+        "D": "Autonomous APs use CAPWAP protocol, while lightweight APs use LWAPP"
+      },
+      "correctAnswer": "B",
+      "explanation": "The primary difference is that lightweight APs require a WLC for management (option B), while autonomous APs are self-contained and can operate independently. Lightweight APs use split-MAC architecture where management functions are handled by the WLC, whereas autonomous APs handle all functions locally.",
+      "difficulty": "easy",
+      "examTip": "Key difference: Lightweight = needs WLC (split-MAC). Autonomous = standalone (no WLC needed)."
+    },
+    {
+      "id": 23,
+      "question": "Which port does the CAPWAP data tunnel use?",
+      "options": {
+        "A": "UDP 5246",
+        "B": "UDP 5247",
+        "C": "TCP 443",
+        "D": "UDP 161"
+      },
+      "correctAnswer": "B",
+      "explanation": "The CAPWAP data tunnel uses UDP port 5247 (option B). This tunnel carries all wireless client traffic from the AP to the WLC. The control tunnel uses UDP port 5246 for AP configuration and management messages.",
+      "difficulty": "medium",
+      "examTip": "Port numbers: 5246 = control (smaller, less traffic), 5247 = data (larger, more traffic)."
+    },
+    {
+      "id": 24,
+      "question": "A company deploys 800 APs across a large campus. Which WLC deployment model is most appropriate?",
+      "options": {
+        "A": "Mobility Express",
+        "B": "Embedded WLC in switches",
+        "C": "Unified WLC (dedicated appliances)",
+        "D": "No WLC needed - use autonomous APs"
+      },
+      "correctAnswer": "C",
+      "explanation": "Unified WLC with dedicated appliances (option C) is most appropriate for 800 APs. Mobility Express only supports up to 100 APs, and Embedded WLC typically supports up to ~200 APs. Unified WLCs can support thousands of APs and provide the scalability, performance, and advanced features needed for large campus deployments.",
+      "difficulty": "easy",
+      "examTip": "Large deployments (hundreds to thousands of APs) = Unified WLC with dedicated appliances."
+    },
+    {
+      "id": 25,
+      "question": "Which statement about the WLC virtual interface is correct?",
+      "options": {
+        "A": "It must be assigned a valid, routable IP address from the corporate network",
+        "B": "It can use a fake IP address like 1.1.1.1 that doesn't need to be routable",
+        "C": "It is used to terminate CAPWAP tunnels from lightweight APs",
+        "D": "It maps WLANs to VLANs on the wired network"
+      },
+      "correctAnswer": "B",
+      "explanation": "The virtual interface can use a fake IP address like 1.1.1.1 (option B) that doesn't need to be routable on the network. It's a logical interface used for DHCP relay and web authentication, not for actual packet forwarding. The management interface terminates CAPWAP tunnels, and dynamic interfaces map WLANs to VLANs.",
+      "difficulty": "medium",
+      "examTip": "EXAM TRAP: Virtual interface = fake IP (like 1.1.1.1), doesn't need to be routable!"
+    }
+  ],
+  "scoringGuide": {
+    "90-100": "Excellent! You have a strong understanding of WLCs and split-MAC architecture. You're well-prepared for CCNA exam questions on this topic.",
+    "80-89": "Good job! You understand most WLC concepts. Review areas where you missed questions, especially CAPWAP ports and interface types.",
+    "70-79": "Passing, but room for improvement. Focus on memorizing CAPWAP port numbers, interface purposes, and the difference between lightweight and autonomous APs.",
+    "60-69": "Below passing. Spend more time studying split-MAC architecture, WLC benefits, and deployment models. Re-read the study material and try again.",
+    "0-59": "Needs significant study. Review the entire study material section on Controllers. Focus on understanding core concepts before retaking the quiz."
+  },
+  "studyRecommendations": {
+    "highPriority": [
+      "Split-MAC architecture (what AP does vs. what WLC does)",
+      "CAPWAP protocol (two tunnels, ports 5246 and 5247)",
+      "Access ports for lightweight APs (NOT trunk ports)",
+      "WLC interfaces (management, dynamic, virtual)",
+      "DHCP Option 43 for AP discovery"
+    ],
+    "mediumPriority": [
+      "WLC benefits (scalability, roaming, load balancing)",
+      "Deployment models (Mobility Express, Embedded, Unified)",
+      "AP discovery methods",
+      "Self-healing coverage concept"
+    ],
+    "lowPriority": [
+      "Service port and redundancy management interfaces",
+      "Specific WLC CLI commands",
+      "Advanced RF management features"
+    ]
+  }
 }
