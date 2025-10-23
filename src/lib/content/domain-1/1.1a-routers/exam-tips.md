@@ -7,15 +7,18 @@
 ## 📌 Question Patterns to Expect
 
 ### 1️⃣ **Longest Prefix Match Questions**
+
 **Most common router question type on the exam.**
 
 **Example format:**
-> *"A router has the following routes in its table. Which interface will be used for a packet destined to 192.168.10.25?"*
+
+> _"A router has the following routes in its table. Which interface will be used for a packet destined to 192.168.10.25?"_
 
 **How to answer:**
+
 1. Write out each route and determine if the destination IP falls within that subnet
 2. If multiple routes match, choose the one with the **longest prefix** (/27 beats /24, /24 beats /16, etc.)
-3. Remember: *More specific = longer prefix = higher number after the /*
+3. Remember: _More specific = longer prefix = higher number after the /_
 
 **Common trap:** Don't assume administrative distance matters here! Once routes are in the table, **only prefix length matters** for forwarding decisions.
 
@@ -24,11 +27,13 @@
 ### 2️⃣ **Layer Identification Questions**
 
 **Example format:**
-> *"At which OSI layer does a router make forwarding decisions?"*
+
+> _"At which OSI layer does a router make forwarding decisions?"_
 
 **Quick answer:** Layer 3 (Network Layer)
 
 **Key points:**
+
 - Routers use **IP addresses** (Layer 3)
 - Switches use **MAC addresses** (Layer 2)
 - Don't confuse Layer 3 switches with regular routers (both operate at Layer 3, but used differently)
@@ -38,7 +43,8 @@
 ### 3️⃣ **Broadcast Domain Questions**
 
 **Example format:**
-> *"How many broadcast domains are in this topology?"*
+
+> _"How many broadcast domains are in this topology?"_
 
 **Rule:** Each router interface = new broadcast domain
 
@@ -49,7 +55,8 @@
 ### 4️⃣ **Default Gateway Questions**
 
 **Example format:**
-> *"A PC with IP 192.168.1.100/24 wants to reach 8.8.8.8. What device does it send the packet to first?"*
+
+> _"A PC with IP 192.168.1.100/24 wants to reach 8.8.8.8. What device does it send the packet to first?"_
 
 **Answer:** The default gateway (router's IP address on that subnet)
 
@@ -60,18 +67,22 @@
 ## ⚠️ Common Mistakes to Avoid
 
 ### ❌ Mistake #1: Confusing AD with Prefix Length
+
 **Wrong thinking:** "OSPF has AD 110 and RIP has AD 120, so OSPF route always wins."
 
-**Correct thinking:** 
-- **AD** is used to decide which routes *enter* the routing table
-- **Prefix length** is used to decide which route is *used* after they're in the table
+**Correct thinking:**
+
+- **AD** is used to decide which routes _enter_ the routing table
+- **Prefix length** is used to decide which route is _used_ after they're in the table
 
 **Exam trap:** They'll give you multiple matching routes from different protocols and ask which one is used. Answer: **Longest prefix match**, not lowest AD.
 
 ---
 
 ### ❌ Mistake #2: Forgetting to Check if IP is in Range
-**Example:** 
+
+**Example:**
+
 - Route: 192.168.1.0/30 (covers .1, .2, .3)
 - Destination: 192.168.1.5
 
@@ -84,24 +95,27 @@
 ---
 
 ### ❌ Mistake #3: Router vs Switch Confusion
+
 **Exam loves to test this!**
 
-| **Routers** | **Switches** |
-|------------|-------------|
+| **Routers**                    | **Switches**                            |
+| ------------------------------ | --------------------------------------- |
 | Connect **different** networks | Connect devices **within** same network |
-| Layer 3 (IP addresses) | Layer 2 (MAC addresses) |
-| Separate broadcast domains | Forward broadcasts |
-| Fewer interfaces | Many interfaces |
+| Layer 3 (IP addresses)         | Layer 2 (MAC addresses)                 |
+| Separate broadcast domains     | Forward broadcasts                      |
+| Fewer interfaces               | Many interfaces                         |
 
 **Exam trap:** "Which device connects the Sales VLAN to the Marketing VLAN?" Answer: Router or Layer 3 switch (not a regular switch).
 
 ---
 
 ### ❌ Mistake #4: Misunderstanding "Connected" Routes
-**Key point:** Routers automatically add *directly connected* networks to the routing table when the interface is up.
+
+**Key point:** Routers automatically add _directly connected_ networks to the routing table when the interface is up.
 
 **Exam question style:**
-> *"Which routes are added to the routing table without any configuration?"*
+
+> _"Which routes are added to the routing table without any configuration?"_
 
 **Answer:** Connected routes (marked with "C" in `show ip route`)
 
@@ -112,6 +126,7 @@
 ## 🧠 Memory Aids
 
 ### **Route Selection Order (for forwarding):**
+
 1. **Longest** prefix match first
 2. If tied, **lowest** AD
 3. If tied, **lowest** metric
@@ -121,6 +136,7 @@
 ---
 
 ### **Administrative Distance Values (memorize these!):**
+
 - **Connected:** 0
 - **Static:** 1
 - **EIGRP:** 90
@@ -134,12 +150,14 @@
 ## 📋 Quick Reference for Exam Day
 
 ### **Router Interface Commands to Know:**
+
 ```
 show ip route               # View routing table
 show ip interface brief     # Check interface status
 ```
 
 ### **Reading `show ip route` Output:**
+
 ```
 D    192.168.10.0/24 [90/2170112] via 10.1.1.2
 ^    ^               ^  ^         ^
@@ -173,7 +191,7 @@ D    192.168.10.0/24 [90/2170112] via 10.1.1.2
 ✅ Longest prefix match is the #1 rule for forwarding  
 ✅ Default route is 0.0.0.0/0 (matches everything)  
 ✅ Routers decrement TTL; switches don't  
-✅ Routers rewrite Layer 2 headers at each hop  
+✅ Routers rewrite Layer 2 headers at each hop
 
 **Expect 8-12 router-related questions on the exam.**
 

@@ -1,6 +1,95 @@
 {
-	"topicId": "1.1.b",
-	"topicTitle": "Layer 2 and Layer 3 Switches",
-	"version": "0.0.1",
-	"questions": []
+	"questions": [
+		{
+			"id": 1,
+			"question": "What is the primary function of a switch in a network?",
+			"options": [
+				"To connect multiple LANs together",
+				"To provide connectivity to hosts within the same LAN",
+				"To send data over the Internet",
+				"To filter malicious traffic"
+			],
+			"correctAnswer": 1,
+			"explanation": "Switches provide connectivity to hosts within the same Local Area Network (LAN). They have many ports (typically 24+) for connecting end devices like computers and servers. Switches do NOT provide connectivity between LANs or over the Internet - that's the job of routers."
+		},
+		{
+			"id": 2,
+			"question": "How many network interfaces do switches typically have?",
+			"options": ["2-4 ports", "8-12 ports", "24+ ports", "100+ ports"],
+			"correctAnswer": 2,
+			"explanation": "Switches typically have 24 or more network interfaces (ports) to connect many end hosts within a LAN. This is one of the key differences between switches and routers - routers have fewer interfaces because they're designed to connect networks together, not individual hosts."
+		},
+		{
+			"id": 3,
+			"question": "At which OSI layer does a Layer 2 switch operate?",
+			"options": [
+				"Physical Layer (Layer 1)",
+				"Data Link Layer (Layer 2)",
+				"Network Layer (Layer 3)",
+				"Transport Layer (Layer 4)"
+			],
+			"correctAnswer": 1,
+			"explanation": "Layer 2 switches operate at the Data Link Layer (Layer 2) of the OSI model. They forward traffic based on MAC addresses. Layer 3 switches can also operate at the Network Layer (Layer 3) and forward traffic based on IP addresses."
+		},
+		{
+			"id": 4,
+			"question": "What is the key difference between a Layer 2 and Layer 3 switch?",
+			"options": [
+				"Layer 3 switches have more ports",
+				"Layer 3 switches can perform routing functions",
+				"Layer 2 switches are faster",
+				"Layer 2 switches cost more"
+			],
+			"correctAnswer": 1,
+			"explanation": "Layer 3 switches can perform routing functions in addition to switching. They operate at both Layer 2 (Data Link) and Layer 3 (Network) of the OSI model, allowing them to forward traffic based on IP addresses as well as MAC addresses. This combines the functionality of switches and routers."
+		},
+		{
+			"id": 5,
+			"question": "A company wants to connect 30 computers in the same office location. Which device should they use?",
+			"options": ["A router", "A switch", "A firewall", "A server"],
+			"correctAnswer": 1,
+			"explanation": "A switch is the appropriate device for connecting multiple computers within the same LAN. Switches have many ports (24+) designed specifically for this purpose. A router would be used to connect different networks together, not individual hosts."
+		},
+		{
+			"id": 6,
+			"question": "Which statement about switches is FALSE?",
+			"options": [
+				"Switches provide connectivity within the same LAN",
+				"Switches can connect networks over the Internet",
+				"Switches typically have 24 or more ports",
+				"Layer 2 switches use MAC addresses to forward traffic"
+			],
+			"correctAnswer": 1,
+			"explanation": "Switches do NOT provide connectivity between LANs or over the Internet - this is FALSE. Switches only provide connectivity to hosts within the same Local Area Network. To connect different LANs or send data over the Internet, you need a router."
+		},
+		{
+			"id": 7,
+			"question": "What does a Layer 2 switch use to forward traffic?",
+			"options": ["IP addresses", "MAC addresses", "Port numbers", "Domain names"],
+			"correctAnswer": 1,
+			"explanation": "Layer 2 switches use MAC addresses (Media Access Control addresses) to forward traffic. MAC addresses operate at the Data Link Layer (Layer 2). Layer 3 switches can also use IP addresses for routing decisions."
+		},
+		{
+			"id": 8,
+			"question": "Which Cisco switch series is mentioned as an example in the study material?",
+			"options": ["Nexus 9000", "Catalyst 2960", "Catalyst 9200", "ASR 1000"],
+			"correctAnswer": 2,
+			"explanation": "The Cisco Catalyst 9200 is mentioned as an example of a modern enterprise switch. Other examples include the Catalyst 3650. The Catalyst series is Cisco's line of enterprise switches."
+		},
+		{
+			"id": 9,
+			"question": "Your company has two offices in different cities. What device is needed to connect the LANs in each office?",
+			"options": ["A Layer 2 switch", "A Layer 3 switch", "A router", "An access point"],
+			"correctAnswer": 2,
+			"explanation": "A router is needed to connect LANs in different locations. Switches (both Layer 2 and Layer 3) provide connectivity within a LAN, but routers are designed to connect different networks together and route traffic between them, including over the Internet."
+		},
+		{
+			"id": 10,
+			"question": "Which layer of the OSI model can a Layer 3 switch operate at?",
+			"options": ["Only Layer 2", "Only Layer 3", "Both Layer 2 and Layer 3", "Layer 1, 2, and 3"],
+			"correctAnswer": 2,
+			"explanation": "Layer 3 switches operate at both the Data Link Layer (Layer 2) and the Network Layer (Layer 3) of the OSI model. This allows them to perform both switching functions (using MAC addresses) and routing functions (using IP addresses)."
+		}
+	],
+	"topicId": "1.1.b"
 }

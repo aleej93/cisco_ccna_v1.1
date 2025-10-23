@@ -1,6 +1,146 @@
 {
-	"topicId": "1.1.c",
-	"topicTitle": "Next-Generation Firewalls and IPS",
-	"version": "0.0.1",
-	"questions": []
+	"topicId": "1.1c",
+	"topicTitle": "Next-generation Firewalls and IPS",
+	"version": "1.0.0",
+	"questions": [
+		{
+			"id": "q1",
+			"question": "What is the primary function of a firewall?",
+			"options": [
+				"To connect multiple LANs together",
+				"To monitor and control network traffic based on configured rules",
+				"To provide IP addresses to network hosts",
+				"To forward traffic between VLANs"
+			],
+			"correctAnswer": 1,
+			"explanation": "A firewall's primary function is to monitor and control network traffic entering and exiting a network based on configured security rules. Firewalls act as security barriers between trusted and untrusted networks."
+		},
+		{
+			"id": "q2",
+			"question": "Which type of firewall is a software application that runs on an individual computer?",
+			"options": [
+				"Network firewall",
+				"Next-generation firewall",
+				"Host-based firewall",
+				"Stateful firewall"
+			],
+			"correctAnswer": 2,
+			"explanation": "A host-based firewall is a software application that filters traffic entering and exiting a single host machine, such as Windows Firewall or macOS Firewall. Network firewalls are hardware devices deployed at the network edge."
+		},
+		{
+			"id": "q3",
+			"question": "What distinguishes a Next-Generation Firewall (NGFW) from a traditional firewall?",
+			"options": [
+				"NGFWs only work with IPv6 networks",
+				"NGFWs include advanced filtering capabilities like deep packet inspection and IPS",
+				"NGFWs are software-based while traditional firewalls are hardware-based",
+				"NGFWs cannot filter based on IP addresses"
+			],
+			"correctAnswer": 1,
+			"explanation": "Next-Generation Firewalls include all traditional firewall features plus advanced capabilities such as application-aware filtering, deep packet inspection, integrated IPS, and threat intelligence integration. They provide more sophisticated security than basic packet filtering."
+		},
+		{
+			"id": "q4",
+			"question": "An IPS (Intrusion Prevention System) differs from an IDS (Intrusion Detection System) in which way?",
+			"options": [
+				"IPS can only detect threats while IDS can block them",
+				"IPS actively blocks threats while IDS only detects and alerts",
+				"IPS is deployed out-of-band while IDS is deployed inline",
+				"IPS is less secure than IDS"
+			],
+			"correctAnswer": 1,
+			"explanation": "An IPS (Intrusion Prevention System) actively prevents threats by blocking malicious traffic in real-time, as it's deployed inline in the traffic path. An IDS (Intrusion Detection System) only detects and alerts on threats but cannot block traffic, as it monitors passively out-of-band."
+		},
+		{
+			"id": "q5",
+			"question": "Where would a network firewall typically be deployed in an enterprise network?",
+			"options": [
+				"On each individual workstation",
+				"Between the internal network and the Internet",
+				"Inside the CPU of each server",
+				"Only in wireless access points"
+			],
+			"correctAnswer": 1,
+			"explanation": "Network firewalls are typically deployed at the network perimeter, between the internal trusted network and external untrusted networks like the Internet. This position allows the firewall to filter all traffic entering and leaving the organization."
+		},
+		{
+			"id": "q6",
+			"question": "Which Cisco product line represents next-generation firewall solutions?",
+			"options": ["Catalyst switches", "ISR routers", "Firepower series", "Meraki access points"],
+			"correctAnswer": 2,
+			"explanation": "Cisco Firepower is the next-generation firewall product line that includes advanced threat detection, IPS capabilities, and application visibility. The ASA series has also been enhanced with FirePOWER services for NGFW capabilities."
+		},
+		{
+			"id": "q7",
+			"question": "What detection method does an IPS use to identify known attack patterns?",
+			"options": [
+				"Heuristic analysis",
+				"Signature-based detection",
+				"Machine learning only",
+				"Port scanning"
+			],
+			"correctAnswer": 1,
+			"explanation": "Signature-based detection compares network traffic against a database of known attack signatures or patterns. When traffic matches a signature, the IPS can identify it as malicious and take action. IPS systems also use anomaly-based detection for unknown threats."
+		},
+		{
+			"id": "q8",
+			"question": "A company wants to deploy a security device that can automatically block malicious traffic in real-time. Which solution should they implement?",
+			"options": [
+				"IDS (Intrusion Detection System)",
+				"IPS (Intrusion Prevention System)",
+				"DHCP server",
+				"DNS server"
+			],
+			"correctAnswer": 1,
+			"explanation": "An IPS (Intrusion Prevention System) is deployed inline and can automatically block malicious traffic in real-time. Unlike IDS which only alerts, IPS takes active prevention measures by dropping or rejecting malicious packets before they reach their destination."
+		},
+		{
+			"id": "q9",
+			"question": "Which statement about host-based firewalls is correct?",
+			"options": [
+				"They protect entire networks from external threats",
+				"They filter traffic entering and exiting a single host machine",
+				"They can only be deployed on Cisco routers",
+				"They replace the need for network firewalls"
+			],
+			"correctAnswer": 1,
+			"explanation": "Host-based firewalls are software applications that protect individual computers by filtering traffic entering and exiting that specific host. They provide an additional layer of security but do not replace network firewalls, which protect entire network segments."
+		},
+		{
+			"id": "q10",
+			"question": "What is a key advantage of deploying an IPS inline rather than out-of-band?",
+			"options": [
+				"Inline deployment is less expensive",
+				"Inline deployment allows the IPS to block threats in real-time",
+				"Inline deployment requires no configuration",
+				"Inline deployment works only with IPv4"
+			],
+			"correctAnswer": 1,
+			"explanation": "Inline deployment places the IPS directly in the traffic path, allowing it to inspect packets and immediately drop or block malicious traffic before it reaches the destination. Out-of-band (passive) monitoring can only alert on threats but cannot prevent them."
+		},
+		{
+			"id": "q11",
+			"question": "Which feature is typically included in a Next-Generation Firewall but NOT in a traditional firewall?",
+			"options": [
+				"Packet filtering based on IP addresses",
+				"Stateful inspection of connections",
+				"Application-aware deep packet inspection",
+				"Port-based filtering"
+			],
+			"correctAnswer": 2,
+			"explanation": "Application-aware deep packet inspection is an advanced NGFW feature that examines the actual application layer content and behavior, not just IP addresses and ports. Traditional firewalls typically perform stateful inspection and basic packet filtering based on IP addresses, ports, and protocols."
+		},
+		{
+			"id": "q12",
+			"question": "A network administrator wants to protect branch office networks from Internet-based attacks while allowing legitimate traffic between branch offices. What should be deployed at each branch?",
+			"options": [
+				"Only switches to connect the offices",
+				"Firewalls at the Internet edge of each branch",
+				"DNS servers only",
+				"Additional wireless access points"
+			],
+			"correctAnswer": 1,
+			"explanation": "Firewalls should be deployed at the Internet edge (network perimeter) of each branch office to monitor and control traffic between the trusted internal network and the untrusted Internet. This protects against Internet-based attacks while allowing configured rules to permit legitimate inter-branch traffic."
+		}
+	]
 }

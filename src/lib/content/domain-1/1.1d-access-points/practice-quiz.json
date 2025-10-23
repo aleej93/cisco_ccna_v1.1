@@ -1,6 +1,482 @@
 {
-	"topicId": "1.1.d",
-	"topicTitle": "Access Points",
-	"version": "0.0.1",
-	"questions": []
+	"quiz_metadata": {
+		"topic": "1.1d Access Points",
+		"exam": "CCNA 200-301 v1.1",
+		"domain": "1.0 Network Fundamentals",
+		"total_questions": 25,
+		"difficulty_levels": {
+			"easy": 8,
+			"medium": 12,
+			"hard": 5
+		},
+		"question_types": {
+			"multiple_choice": 20,
+			"multiple_select": 5
+		}
+	},
+	"questions": [
+		{
+			"id": 1,
+			"difficulty": "easy",
+			"type": "multiple_choice",
+			"question": "Which type of access point requires individual configuration and management?",
+			"options": {
+				"A": "Lightweight AP",
+				"B": "Autonomous AP",
+				"C": "FlexConnect AP",
+				"D": "Cloud-managed AP"
+			},
+			"correct_answer": "B",
+			"explanation": "Autonomous APs are self-contained and must be configured individually. Lightweight APs are centrally managed by a WLC.",
+			"exam_tip": "Remember: Autonomous = Independent = Individual configuration required",
+			"reference": "CCNA v1.1 - 1.1d Access Points - Autonomous Architecture"
+		},
+		{
+			"id": 2,
+			"difficulty": "easy",
+			"type": "multiple_choice",
+			"question": "What protocol do lightweight access points use to communicate with a wireless LAN controller?",
+			"options": {
+				"A": "LWAPP",
+				"B": "SNMP",
+				"C": "CAPWAP",
+				"D": "SSH"
+			},
+			"correct_answer": "C",
+			"explanation": "CAPWAP (Control And Provisioning of Wireless Access Points) is the protocol used by lightweight APs to communicate with the WLC. It replaced the older LWAPP protocol.",
+			"exam_tip": "CAPWAP is the current standard. LWAPP is the legacy protocol it replaced.",
+			"reference": "CCNA v1.1 - 1.1d Access Points - CAPWAP Protocol"
+		},
+		{
+			"id": 3,
+			"difficulty": "medium",
+			"type": "multiple_select",
+			"question": "Which two statements about CAPWAP are true? (Choose two)",
+			"options": {
+				"A": "The control tunnel uses UDP port 5246",
+				"B": "The data tunnel uses TCP port 5247",
+				"C": "Both tunnels are encrypted by default",
+				"D": "The control tunnel is encrypted by default",
+				"E": "CAPWAP tunnels use TCP for reliability"
+			},
+			"correct_answers": ["A", "D"],
+			"explanation": "CAPWAP uses UDP (not TCP) for both tunnels. Control tunnel (UDP 5246) is encrypted by default. Data tunnel (UDP 5247) is NOT encrypted by default but can be encrypted with DTLS.",
+			"exam_tip": "Memorize: UDP 5246 (control, encrypted) and UDP 5247 (data, not encrypted by default)",
+			"reference": "CCNA v1.1 - 1.1d Access Points - CAPWAP Protocol Details"
+		},
+		{
+			"id": 4,
+			"difficulty": "easy",
+			"type": "multiple_choice",
+			"question": "What is the default operational mode for a lightweight access point?",
+			"options": {
+				"A": "FlexConnect",
+				"B": "Monitor",
+				"C": "Local",
+				"D": "Sniffer"
+			},
+			"correct_answer": "C",
+			"explanation": "Local mode is the default mode for lightweight APs. In this mode, the AP provides a BSS for clients to associate with and forwards all traffic through CAPWAP tunnels to the WLC.",
+			"exam_tip": "Default = Local. This is a common exam question.",
+			"reference": "CCNA v1.1 - 1.1d Access Points - Operational Modes"
+		},
+		{
+			"id": 5,
+			"difficulty": "medium",
+			"type": "multiple_choice",
+			"question": "A network administrator needs to deploy access points at a remote branch office. The APs must continue to provide wireless service even if the WAN link to the central WLC fails. Which AP mode should be configured?",
+			"options": {
+				"A": "Local",
+				"B": "Monitor",
+				"C": "FlexConnect",
+				"D": "Bridge"
+			},
+			"correct_answer": "C",
+			"explanation": "FlexConnect mode allows APs to locally switch traffic between wired and wireless networks if connectivity to the WLC is lost. Local mode requires WLC connectivity for data forwarding.",
+			"exam_tip": "FlexConnect = Survives WLC failure. This is the #1 use case for remote sites.",
+			"reference": "CCNA v1.1 - 1.1d Access Points - FlexConnect Mode"
+		},
+		{
+			"id": 6,
+			"difficulty": "medium",
+			"type": "multiple_choice",
+			"question": "Which lightweight AP mode is dedicated to detecting rogue wireless devices and can send de-authentication frames to disassociate rogue clients?",
+			"options": {
+				"A": "Local",
+				"B": "Monitor",
+				"C": "Rogue Detector",
+				"D": "Sniffer"
+			},
+			"correct_answer": "B",
+			"explanation": "Monitor mode APs do not offer a BSS for clients. They are dedicated to receiving 802.11 frames to detect rogue devices and can send de-authentication messages. Rogue Detector mode listens on the wired network only.",
+			"exam_tip": "Monitor = Wireless monitoring. Rogue Detector = Wired monitoring.",
+			"reference": "CCNA v1.1 - 1.1d Access Points - Monitor Mode"
+		},
+		{
+			"id": 7,
+			"difficulty": "hard",
+			"type": "multiple_select",
+			"question": "In a split-MAC architecture, which three functions are handled by the lightweight access point? (Choose three)",
+			"options": {
+				"A": "Client authentication",
+				"B": "Real-time packet encryption/decryption",
+				"C": "Transmitting and receiving RF traffic",
+				"D": "RF management (channel selection, power)",
+				"E": "Sending beacon frames",
+				"F": "QoS policy enforcement"
+			},
+			"correct_answers": ["B", "C", "E"],
+			"explanation": "In split-MAC architecture, the AP handles time-sensitive operations: RF transmission/reception, encryption/decryption, and sending beacons. The WLC handles management functions like authentication, RF management, and QoS policies.",
+			"exam_tip": "AP = Real-time/Fast tasks. WLC = Management/Smart tasks.",
+			"reference": "CCNA v1.1 - 1.1d Access Points - Split-MAC Architecture"
+		},
+		{
+			"id": 8,
+			"difficulty": "easy",
+			"type": "multiple_choice",
+			"question": "What type of switch port should a lightweight access point connect to?",
+			"options": {
+				"A": "Trunk port",
+				"B": "Access port",
+				"C": "Routed port",
+				"D": "Dynamic port"
+			},
+			"correct_answer": "B",
+			"explanation": "Lightweight APs connect to access ports because they tunnel all traffic to the WLC via CAPWAP. They don't need trunk ports because they don't locally switch VLANs. Autonomous APs require trunk ports.",
+			"exam_tip": "Lightweight = Access port. Autonomous = Trunk port. This is frequently tested.",
+			"reference": "CCNA v1.1 - 1.1d Access Points - Network Integration"
+		},
+		{
+			"id": 9,
+			"difficulty": "medium",
+			"type": "multiple_choice",
+			"question": "An enterprise has deployed 100 access points across a campus, all broadcasting the same SSID 'CorpWiFi'. What type of service set is this?",
+			"options": {
+				"A": "BSS (Basic Service Set)",
+				"B": "ESS (Extended Service Set)",
+				"C": "IBSS (Independent Basic Service Set)",
+				"D": "MBSS (Mesh Basic Service Set)"
+			},
+			"correct_answer": "B",
+			"explanation": "An ESS (Extended Service Set) consists of multiple APs broadcasting the same SSID, creating one logical wireless network. A BSS is a single AP. An MBSS is a mesh network.",
+			"exam_tip": "Multiple APs + Same SSID = ESS. This enables seamless roaming.",
+			"reference": "CCNA v1.1 - 1.1d Access Points - Service Sets"
+		},
+		{
+			"id": 10,
+			"difficulty": "medium",
+			"type": "multiple_choice",
+			"question": "What identifies a single access point's wireless coverage area?",
+			"options": {
+				"A": "SSID",
+				"B": "BSSID",
+				"C": "ESS-ID",
+				"D": "MAC address"
+			},
+			"correct_answer": "B",
+			"explanation": "BSSID (Basic Service Set Identifier) is the MAC address of an AP's radio and uniquely identifies each AP. SSID is the network name and can be shared by multiple APs in an ESS.",
+			"exam_tip": "BSSID = MAC address = Unique per AP. SSID = Network name = Shared across ESS.",
+			"reference": "CCNA v1.1 - 1.1d Access Points - Service Sets"
+		},
+		{
+			"id": 11,
+			"difficulty": "hard",
+			"type": "multiple_select",
+			"question": "Which three connection states are valid during the 802.11 client association process? (Choose three)",
+			"options": {
+				"A": "Not authenticated, not associated",
+				"B": "Authenticated, not associated",
+				"C": "Not authenticated, associated",
+				"D": "Authenticated and associated",
+				"E": "Pre-authenticated and associated",
+				"F": "Authorized and encrypted"
+			},
+			"correct_answers": ["A", "B", "D"],
+			"explanation": "The three valid 802.11 states are: (1) Not authenticated, not associated (initial), (2) Authenticated, not associated (after auth request/response), (3) Authenticated and associated (fully connected). A client cannot be associated without being authenticated first.",
+			"exam_tip": "You can't be associated without being authenticated. State C is impossible.",
+			"reference": "CCNA v1.1 - 1.1d Access Points - Association Process"
+		},
+		{
+			"id": 12,
+			"difficulty": "medium",
+			"type": "multiple_choice",
+			"question": "In a mesh network deployment, what is the access point that connects to the wired network called?",
+			"options": {
+				"A": "MAP (Mesh Access Point)",
+				"B": "RAP (Root Access Point)",
+				"C": "WAP (Wireless Access Point)",
+				"D": "BAP (Bridge Access Point)"
+			},
+			"correct_answer": "B",
+			"explanation": "In an MBSS (Mesh Basic Service Set), the RAP (Root Access Point) is connected to the wired network. MAPs (Mesh Access Points) are the other APs that wirelessly connect to form the mesh.",
+			"exam_tip": "RAP = Root = Wired connection. MAP = Mesh = Wireless connection.",
+			"reference": "CCNA v1.1 - 1.1d Access Points - MBSS"
+		},
+		{
+			"id": 13,
+			"difficulty": "easy",
+			"type": "multiple_choice",
+			"question": "What do access points periodically send to advertise their presence and available wireless networks?",
+			"options": {
+				"A": "Probe requests",
+				"B": "Authentication frames",
+				"C": "Beacon frames",
+				"D": "Association requests"
+			},
+			"correct_answer": "C",
+			"explanation": "Beacon frames are periodically broadcast by APs (typically every 100ms) to advertise the BSS and its capabilities. Clients use passive scanning to listen for beacons.",
+			"exam_tip": "Beacons = AP broadcasts. Probe requests = Client sends.",
+			"reference": "CCNA v1.1 - 1.1d Access Points - Association Process"
+		},
+		{
+			"id": 14,
+			"difficulty": "medium",
+			"type": "multiple_choice",
+			"question": "Which lightweight AP mode should be used for wireless packet capture and analysis with tools like Wireshark?",
+			"options": {
+				"A": "Local",
+				"B": "Monitor",
+				"C": "Sniffer",
+				"D": "FlexConnect"
+			},
+			"correct_answer": "C",
+			"explanation": "Sniffer mode dedicates the AP to capturing 802.11 frames and sending them to analysis software like Wireshark. The AP does not offer a BSS for clients in this mode.",
+			"exam_tip": "Sniffer = Packet capture. Monitor = Rogue detection.",
+			"reference": "CCNA v1.1 - 1.1d Access Points - Sniffer Mode"
+		},
+		{
+			"id": 15,
+			"difficulty": "hard",
+			"type": "multiple_choice",
+			"question": "A network engineer needs to identify sources of RF interference affecting wireless performance. Which AP mode is dedicated to spectrum analysis across all channels?",
+			"options": {
+				"A": "Monitor",
+				"B": "Sniffer",
+				"C": "SE-Connect (Spectrum Expert Connect)",
+				"D": "Local"
+			},
+			"correct_answer": "C",
+			"explanation": "SE-Connect (Spectrum Expert Connect) mode dedicates the AP to RF spectrum analysis on all channels. It can send data to software like Cisco Spectrum Expert for collecting and analyzing interference sources.",
+			"exam_tip": "SE-Connect = Spectrum analysis = Finding interference sources.",
+			"reference": "CCNA v1.1 - 1.1d Access Points - SE-Connect Mode"
+		},
+		{
+			"id": 16,
+			"difficulty": "medium",
+			"type": "multiple_choice",
+			"question": "What authentication method do lightweight APs and WLCs use to verify each other's identity?",
+			"options": {
+				"A": "Username and password",
+				"B": "Pre-shared key (PSK)",
+				"C": "X.509 digital certificates",
+				"D": "RADIUS authentication"
+			},
+			"correct_answer": "C",
+			"explanation": "Lightweight APs and WLCs authenticate each other using X.509 standard digital certificates. This ensures only authorized APs can join the network and prevents rogue APs from connecting to the WLC.",
+			"exam_tip": "X.509 certificates = Mutual authentication between AP and WLC.",
+			"reference": "CCNA v1.1 - 1.1d Access Points - CAPWAP Security"
+		},
+		{
+			"id": 17,
+			"difficulty": "easy",
+			"type": "multiple_choice",
+			"question": "Which architecture is recommended for a small coffee shop with one access point?",
+			"options": {
+				"A": "Lightweight AP with WLC",
+				"B": "Autonomous AP",
+				"C": "FlexConnect AP",
+				"D": "Cloud-managed AP"
+			},
+			"correct_answer": "B",
+			"explanation": "For small deployments (1-5 APs) where centralized management isn't necessary, autonomous APs are the most cost-effective solution. A WLC would be overkill and add unnecessary cost.",
+			"exam_tip": "Small/simple deployment = Autonomous. Large/complex = Lightweight + WLC.",
+			"reference": "CCNA v1.1 - 1.1d Access Points - Architecture Selection"
+		},
+		{
+			"id": 18,
+			"difficulty": "hard",
+			"type": "multiple_select",
+			"question": "Which three are advantages of lightweight AP architecture over autonomous APs? (Choose three)",
+			"options": {
+				"A": "Lower upfront hardware cost",
+				"B": "Centralized configuration management",
+				"C": "Seamless client roaming between APs",
+				"D": "No external controller required",
+				"E": "Dynamic RF optimization",
+				"F": "Individual AP configuration via web GUI"
+			},
+			"correct_answers": ["B", "C", "E"],
+			"explanation": "Lightweight architecture advantages include: centralized management (configure all APs from WLC), seamless roaming (clients maintain connection), and automatic RF optimization. However, it has higher upfront cost (WLC required) and doesn't support individual web GUI configuration.",
+			"exam_tip": "Lightweight = Management, Scalability, Roaming. Autonomous = Simple, Low cost.",
+			"reference": "CCNA v1.1 - 1.1d Access Points - Architecture Comparison"
+		},
+		{
+			"id": 19,
+			"difficulty": "medium",
+			"type": "multiple_choice",
+			"question": "A company has 500 access points managed by a central WLC. An administrator needs to change the wireless password for the corporate SSID. How many devices need to be reconfigured?",
+			"options": {
+				"A": "1 (the WLC only)",
+				"B": "500 (all APs individually)",
+				"C": "501 (WLC plus all APs)",
+				"D": "2 (primary and backup WLC)"
+			},
+			"correct_answer": "A",
+			"explanation": "With lightweight architecture, configuration is centralized on the WLC. Changing the password on the WLC automatically pushes the update to all managed APs via CAPWAP. No individual AP configuration needed.",
+			"exam_tip": "This demonstrates the key benefit of centralized management in lightweight architecture.",
+			"reference": "CCNA v1.1 - 1.1d Access Points - Centralized Management"
+		},
+		{
+			"id": 20,
+			"difficulty": "medium",
+			"type": "multiple_choice",
+			"question": "Which scanning method has a wireless client send probe requests and listen for probe responses from access points?",
+			"options": {
+				"A": "Passive scanning",
+				"B": "Active scanning",
+				"C": "Beacon scanning",
+				"D": "Discovery scanning"
+			},
+			"correct_answer": "B",
+			"explanation": "Active scanning has the client send probe requests on all channels and listen for probe responses from APs. Passive scanning involves the client listening for beacon frames sent by APs.",
+			"exam_tip": "Active = Client sends probes. Passive = Client listens for beacons.",
+			"reference": "CCNA v1.1 - 1.1d Access Points - Association Process"
+		},
+		{
+			"id": 21,
+			"difficulty": "hard",
+			"type": "multiple_choice",
+			"question": "An AP in Rogue Detector mode has its radio disabled but listens to wired network traffic to correlate with information from the WLC. What protocol messages does it primarily monitor on the wired network?",
+			"options": {
+				"A": "ICMP",
+				"B": "DNS",
+				"C": "ARP",
+				"D": "DHCP"
+			},
+			"correct_answer": "C",
+			"explanation": "Rogue Detector mode APs listen for ARP messages on the wired network. By correlating MAC addresses from ARP with the list of suspected rogue devices from the WLC, they can detect if a rogue AP is physically connected to the wired network.",
+			"exam_tip": "Rogue Detector uses ARP correlation to confirm rogues on wired network.",
+			"reference": "CCNA v1.1 - 1.1d Access Points - Rogue Detector Mode"
+		},
+		{
+			"id": 22,
+			"difficulty": "medium",
+			"type": "multiple_choice",
+			"question": "What is the primary purpose of the Bridge/Mesh AP mode?",
+			"options": {
+				"A": "Provide BSS for client connections",
+				"B": "Detect rogue wireless devices",
+				"C": "Create wireless links between sites over long distances",
+				"D": "Analyze RF spectrum for interference"
+			},
+			"correct_answer": "C",
+			"explanation": "Bridge/Mesh mode is used to create wireless connections between sites, similar to outdoor bridge functionality. It's used when running physical cables between locations is difficult or expensive.",
+			"exam_tip": "Bridge/Mesh = Wireless WAN link between sites.",
+			"reference": "CCNA v1.1 - 1.1d Access Points - Bridge Mode"
+		},
+		{
+			"id": 23,
+			"difficulty": "easy",
+			"type": "multiple_choice",
+			"question": "What must a wireless client be in order to send traffic through an access point?",
+			"options": {
+				"A": "Authenticated only",
+				"B": "Associated only",
+				"C": "Authenticated and associated",
+				"D": "Encrypted and associated"
+			},
+			"correct_answer": "C",
+			"explanation": "A client must be both authenticated AND associated to send traffic through the AP. Authentication alone is not sufficient - the client must complete the full association process.",
+			"exam_tip": "Both conditions required: authenticated AND associated.",
+			"reference": "CCNA v1.1 - 1.1d Access Points - Association States"
+		},
+		{
+			"id": 24,
+			"difficulty": "hard",
+			"type": "multiple_select",
+			"question": "A network architect is designing a wireless deployment for a large warehouse where running Ethernet cables to all AP locations is cost-prohibitive. Which three requirements must be met for a mesh network? (Choose three)",
+			"options": {
+				"A": "At least one RAP with wired network connection",
+				"B": "All APs must have dual radios",
+				"C": "MAPs must use the same channel for client and backhaul traffic",
+				"D": "A routing protocol to determine best mesh path",
+				"E": "All APs must be the same model",
+				"F": "Direct line-of-sight between all APs"
+			},
+			"correct_answers": ["A", "B", "D"],
+			"explanation": "Mesh networks require: (1) At least one RAP connected to wired network, (2) Dual radios (one for clients, one for mesh backhaul), (3) A routing protocol to find best path through mesh. Different channels should be used for client and backhaul to avoid interference.",
+			"exam_tip": "Mesh = RAP + MAPs + Dual radios + Routing protocol.",
+			"reference": "CCNA v1.1 - 1.1d Access Points - MBSS Architecture"
+		},
+		{
+			"id": 25,
+			"difficulty": "medium",
+			"type": "multiple_choice",
+			"question": "Which component of split-MAC architecture is responsible for making decisions about client roaming between access points?",
+			"options": {
+				"A": "The lightweight access points",
+				"B": "The wireless LAN controller (WLC)",
+				"C": "The wireless client device",
+				"D": "The authentication server"
+			},
+			"correct_answer": "B",
+			"explanation": "In split-MAC architecture, the WLC handles client association and roaming management. The WLC has visibility into all APs and can facilitate seamless handoffs as clients move between APs.",
+			"exam_tip": "WLC = Intelligence/Management. AP = Real-time operations.",
+			"reference": "CCNA v1.1 - 1.1d Access Points - Split-MAC Functions"
+		}
+	],
+	"answer_key": {
+		"1": "B",
+		"2": "C",
+		"3": ["A", "D"],
+		"4": "C",
+		"5": "C",
+		"6": "B",
+		"7": ["B", "C", "E"],
+		"8": "B",
+		"9": "B",
+		"10": "B",
+		"11": ["A", "B", "D"],
+		"12": "B",
+		"13": "C",
+		"14": "C",
+		"15": "C",
+		"16": "C",
+		"17": "B",
+		"18": ["B", "C", "E"],
+		"19": "A",
+		"20": "B",
+		"21": "C",
+		"22": "C",
+		"23": "C",
+		"24": ["A", "B", "D"],
+		"25": "B"
+	},
+	"scoring_guide": {
+		"passing_score": 80,
+		"excellent": "23-25 correct (92-100%)",
+		"good": "20-22 correct (80-88%)",
+		"needs_review": "17-19 correct (68-76%)",
+		"must_restudy": "Below 17 correct (<68%)"
+	},
+	"study_recommendations": {
+		"scored_below_68": [
+			"Re-read the study-material.md file completely",
+			"Focus on CAPWAP protocol details and port numbers",
+			"Review split-MAC architecture (AP vs WLC functions)",
+			"Practice identifying scenarios for each AP mode"
+		],
+		"scored_68_to_79": [
+			"Review exam-tips.md for high-yield topics",
+			"Focus on weak areas identified in quiz",
+			"Practice questions on AP modes (Local, FlexConnect)",
+			"Review real-world scenarios for context"
+		],
+		"scored_80_plus": [
+			"You're exam-ready on Access Points!",
+			"Do a quick review of commands.md",
+			"Practice a few more questions to maintain knowledge",
+			"Move on to next topic: 1.1e Controllers"
+		]
+	}
 }

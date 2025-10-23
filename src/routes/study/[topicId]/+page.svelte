@@ -7,7 +7,6 @@
 	import { page } from '$app/stores';
 	import { resolve } from '$app/paths';
 	import PracticeQuiz from '$lib/components/PracticeQuiz.svelte';
-	import quizRouters from '$lib/content/domain-1/1.1a-routers/practice-quiz.json';
 	import type { ComponentType } from 'svelte';
 
 	const MARKDOWN_TABS = ['study', 'real-world', 'exam-tips', 'commands'] as const;
@@ -50,6 +49,28 @@
 
 	let resourcesContent: ResourcesContent | null = null;
 	let resourcesLoading = false;
+	let currentQuiz: QuizData | undefined;
+
+	interface QuizQuestion {
+		id: string;
+		question: string;
+		options: string[];
+		correctAnswer: number;
+		explanation: string;
+	}
+
+	interface QuizData {
+		topicId: string;
+		topicTitle: string;
+		version: string;
+		questions: QuizQuestion[];
+	}
+
+	const quizModules = import.meta.glob<QuizData>('../../../lib/content/**/practice-quiz.json', {
+		eager: true
+	});
+
+	const quizData: Record<string, QuizData> = {};
 
 	// TypeScript interface for tab structure
 	interface Tab {
@@ -238,6 +259,127 @@
 	function getTopicTitle(id: string): string {
 		return topicNames[id] || `Topic ${id}`;
 	}
+
+	function topicIdFromPrefix(prefix: string): string | null {
+		const match = /^([0-9]+)\.([0-9]+)(.*)$/.exec(prefix);
+		if (!match) return null;
+		const [, domain, main, rest] = match;
+		let topic = `${domain}.${main}`;
+		if (rest) {
+			topic += rest
+				.replace(/\./g, '')
+				.split('')
+				.map((ch) => `.${ch}`)
+				.join('');
+		}
+		return topic;
+	}
+
+	function buildQuizMappings() {
+		for (const [path, mod] of Object.entries(quizModules)) {
+			const match = /domain-(\d+)\/([^/]+)\/practice-quiz\.json$/.exec(path);
+			if (!match) continue;
+			const [, , dir] = match;
+			const [prefixRaw] = dir.split('-');
+			if (!prefixRaw) continue;
+			const topicId = topicIdFromPrefix(prefixRaw);
+			if (!topicId) continue;
+
+			const quiz =
+				(mod as { default?: QuizData }).default !== undefined
+					? (mod as { default: QuizData }).default
+					: (mod as QuizData);
+
+			const titleFromQuiz = quiz.topicTitle;
+			const titleFromMap = topicNames[topicId];
+			const fallbackTitle = dir
+				.split('-')
+				.slice(1)
+				.join(' ')
+				.replace(/\s+/g, ' ')
+				.replace(/\b\w/g, (c) => c.toUpperCase());
+
+			const sourceQuestions = Array.isArray(quiz.questions) ? quiz.questions : [];
+			const normalizedQuestions = sourceQuestions
+				.map((question, index) => {
+					const rawOptions = question?.options;
+					const optionEntries = Array.isArray(rawOptions)
+						? rawOptions.map((value, idx) => [String.fromCharCode(65 + idx), value])
+						: Object.entries(rawOptions ?? {});
+					const sortedEntries = optionEntries.sort((a, b) => a[0].localeCompare(b[0]));
+					const optionTexts = sortedEntries.map(([, value]) =>
+						typeof value === 'string' ? value : JSON.stringify(value)
+					);
+
+					const letterToIndex = Object.fromEntries(
+						sortedEntries.map(([key], idx) => [key.trim().toUpperCase(), idx])
+					);
+
+					let correctAnswerIndex: number | undefined;
+					const singleAnswer =
+						question?.correctAnswer ??
+						question?.correct_answer ??
+						question?.answer ??
+						question?.correct_choice;
+
+					if (typeof singleAnswer === 'number') {
+						correctAnswerIndex = singleAnswer;
+					} else if (typeof singleAnswer === 'string') {
+						correctAnswerIndex = letterToIndex[singleAnswer.trim().toUpperCase()];
+					}
+
+					const multipleAnswers =
+						question?.correct_answers ?? question?.answers ?? question?.correctChoices;
+
+					let finalExplanation = question?.explanation ?? '';
+
+					if (Array.isArray(multipleAnswers) && multipleAnswers.length > 0) {
+						const indices = multipleAnswers
+							.map((answer: unknown) => {
+								if (typeof answer === 'number') return answer;
+								if (typeof answer === 'string') {
+									return letterToIndex[answer.trim().toUpperCase()];
+								}
+								return undefined;
+							})
+							.filter((value): value is number => typeof value === 'number');
+						if (indices.length > 0) {
+							correctAnswerIndex = indices[0];
+							const answerLetters = indices
+								.map((idx) => sortedEntries[idx]?.[0])
+								.filter(Boolean)
+								.join(', ');
+							if (!finalExplanation.includes('Correct options')) {
+								finalExplanation =
+									`${finalExplanation}\n\nCorrect options: ${answerLetters}`.trim();
+							}
+						}
+					}
+
+					if (typeof correctAnswerIndex !== 'number') {
+						correctAnswerIndex = 0;
+					}
+
+					return {
+						id: question?.id?.toString() ?? `q${index + 1}`,
+						question: question?.question ?? question?.prompt ?? '',
+						options: optionTexts,
+						correctAnswer: correctAnswerIndex,
+						explanation: finalExplanation
+					};
+				})
+				.filter((q) => q.options.length > 0);
+
+			quizData[topicId] = {
+				topicId,
+				topicTitle: titleFromQuiz ?? titleFromMap ?? fallbackTitle,
+				version: quiz.version ?? '0.0.1',
+				questions: normalizedQuestions
+			};
+		}
+	}
+
+	buildQuizMappings();
 
 	// Topic order for each domain (for navigation)
 	const domainTopicOrder: { [key: string]: string[] } = {
@@ -501,6 +643,8 @@
 			loadResourcesContent(topicId);
 		}
 	}
+
+	$: currentQuiz = quizData[topicId];
 </script>
 
 <div class="min-h-screen bg-white">
@@ -581,12 +725,12 @@
 						</div>
 					{/if}
 				{:else if activeTab === 'quiz'}
-					{#if topicId === '1.1.a'}
-						<PracticeQuiz questions={quizRouters} />
+					{#if currentQuiz && currentQuiz.questions.length > 0}
+						<PracticeQuiz questions={currentQuiz} />
 					{:else}
 						<div class="text-gray-600">
 							<h2 class="mb-4 text-2xl font-bold text-black">Practice Quiz</h2>
-							<p>Quiz questions will go here.</p>
+							<p>Quiz questions for this topic are coming soon...</p>
 						</div>
 					{/if}
 				{:else if activeTab === 'real-world'}

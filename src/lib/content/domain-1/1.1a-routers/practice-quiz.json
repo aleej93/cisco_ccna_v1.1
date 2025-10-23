@@ -1,5 +1,5 @@
 {
-	"topicId": "1.1a-routers",
+	"topicId": "1.1.a",
 	"topicTitle": "Routers",
 	"version": "CCNA 200-301 v1.1",
 	"questions": [
@@ -13,7 +13,7 @@
 				"Layer 7 (Application)"
 			],
 			"correctAnswer": 1,
-			"explanation": "Routers read Layer 3 headers (IPv4/IPv6) to choose a next hop based on the routing table. — CCNA v1.1: 1.1a"
+			"explanation": "Routers read Layer 3 headers (IPv4/IPv6) to choose a next hop based on the routing table. \u2014 CCNA v1.1: 1.1a"
 		},
 		{
 			"id": 2,
@@ -25,7 +25,7 @@
 				"Encrypting traffic end-to-end by default"
 			],
 			"correctAnswer": 2,
-			"explanation": "Routers interconnect separate IP networks and forward packets between them, creating Layer 3 boundaries. — 1.1a"
+			"explanation": "Routers interconnect separate IP networks and forward packets between them, creating Layer 3 boundaries. \u2014 1.1a"
 		},
 		{
 			"id": 3,
@@ -37,7 +37,7 @@
 				"Longest prefix match"
 			],
 			"correctAnswer": 3,
-			"explanation": "Routers choose the most specific route (greatest prefix length). /24 beats /16 and the default route. — 3.2 (ties to 1.1a)"
+			"explanation": "Routers choose the most specific route (greatest prefix length). /24 beats /16 and the default route. \u2014 3.2 (ties to 1.1a)"
 		},
 		{
 			"id": 4,
@@ -49,11 +49,11 @@
 				"Broadcasts can pass through if TTL is high"
 			],
 			"correctAnswer": 2,
-			"explanation": "Routers do not forward Layer 2 broadcasts; each router interface defines a new broadcast domain. — 1.1a"
+			"explanation": "Routers do not forward Layer 2 broadcasts; each router interface defines a new broadcast domain. \u2014 1.1a"
 		},
 		{
 			"id": 5,
-			"question": "Which entries are automatically installed in a router’s routing table without configuration?",
+			"question": "Which entries are automatically installed in a router\u2019s routing table without configuration?",
 			"options": [
 				"Default route and static routes",
 				"Connected networks on up/up interfaces",
@@ -61,7 +61,7 @@
 				"BGP-learned routes"
 			],
 			"correctAnswer": 1,
-			"explanation": "Directly connected networks appear when interfaces are up and have Layer 3 addresses. — 3.1 (foundation for 1.1a)"
+			"explanation": "Directly connected networks appear when interfaces are up and have Layer 3 addresses. \u2014 3.1 (foundation for 1.1a)"
 		},
 		{
 			"id": 6,
@@ -73,7 +73,7 @@
 				"Install only the first route learned"
 			],
 			"correctAnswer": 1,
-			"explanation": "Cisco routers support ECMP and will load balance across equal-cost routes (per-destination by default). — 3.2/3.4 context"
+			"explanation": "Cisco routers support ECMP and will load balance across equal-cost routes (per-destination by default). \u2014 3.2/3.4 context"
 		},
 		{
 			"id": 7,
@@ -85,7 +85,7 @@
 				"Outgoing interface speed"
 			],
 			"correctAnswer": 2,
-			"explanation": "Selection order: longest prefix match → then administrative distance (source trust) → then metric. — 3.2"
+			"explanation": "Selection order: longest prefix match \u2192 then administrative distance (source trust) \u2192 then metric. \u2014 3.2"
 		},
 		{
 			"id": 8,
@@ -97,11 +97,11 @@
 				"To identify the router used to reach remote networks"
 			],
 			"correctAnswer": 3,
-			"explanation": "The default gateway is the router’s IP used when the destination is outside the local subnet. — 1.1a"
+			"explanation": "The default gateway is the router\u2019s IP used when the destination is outside the local subnet. \u2014 1.1a"
 		},
 		{
 			"id": 9,
-			"question": "Which Cisco IOS command shows a router’s Layer 3 forwarding decisions and next hops?",
+			"question": "Which Cisco IOS command shows a router\u2019s Layer 3 forwarding decisions and next hops?",
 			"options": [
 				"show mac address-table",
 				"show ip route",
@@ -109,7 +109,7 @@
 				"show vlan brief"
 			],
 			"correctAnswer": 1,
-			"explanation": "show ip route displays the routing table including sources, metrics, and next hops. — 3.1"
+			"explanation": "show ip route displays the routing table including sources, metrics, and next hops. \u2014 3.1"
 		},
 		{
 			"id": 10,
@@ -121,7 +121,7 @@
 				"Static routes can only point to interfaces, not next-hop addresses"
 			],
 			"correctAnswer": 1,
-			"explanation": "Static routes are admin-defined; dynamic routes come from routing protocols and can reconverge after changes. — 3.3/3.4"
+			"explanation": "Static routes are admin-defined; dynamic routes come from routing protocols and can reconverge after changes. \u2014 3.3/3.4"
 		},
 		{
 			"id": 11,
@@ -133,14 +133,14 @@
 				"Multicast (ff00::/8)"
 			],
 			"correctAnswer": 2,
-			"explanation": "Global unicast addresses are routable on the Internet and used for inter-network forwarding. — 1.1a (IPv6 context)"
+			"explanation": "Global unicast addresses are routable on the Internet and used for inter-network forwarding. \u2014 1.1a (IPv6 context)"
 		},
 		{
 			"id": 12,
 			"question": "Which Cisco feature speeds up packet forwarding by using a prebuilt FIB and adjacency table?",
 			"options": ["STP", "CEF (Cisco Express Forwarding)", "CDP", "LLDP"],
 			"correctAnswer": 1,
-			"explanation": "CEF builds a Forwarding Information Base and adjacency table for high-speed Layer 3 forwarding. — 1.1a/3.2"
+			"explanation": "CEF builds a Forwarding Information Base and adjacency table for high-speed Layer 3 forwarding. \u2014 1.1a/3.2"
 		}
 	]
 }
